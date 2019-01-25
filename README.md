@@ -26,10 +26,7 @@ https://pages.github.com/
 # 码云 Gitee 中国国内代码托管平台 Page 官网介绍
 https://gitee.com/help/articles/4136
 
-# Jekyll 英文官方站点
-https://jekyllrb.com/
 
-
-# Jekyll 开源地址
-https://github.com/jekyll/jekyll
+# 一篇文章搞定Github API 调用 (v3）
+https://segmentfault.com/a/1190000015144126
 ```

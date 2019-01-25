@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="format-detection" content="telephone=notelphone=no, email=no">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta content="width=device-width,initial-scale=1,user-scalable=no" name="viewport">
+
+    <title>JSBlog 博客首页</title>
+    <meta name="keywords" content="js, blog, yellowtulipshow, github, gitee" />
+    <meta name="description" content="JSBlog 脚本博客, 遍历展现开源项目所有文件, 源代码 + 图片" />
+
+    <!-- 是否启用 WebApp 全屏模式，删除苹果默认的工具栏和菜单栏 -->
+    <meta name="apple-touch-fullscreen" content="yes">
+    <!-- 设置苹果工具栏颜色:默认值为 default，可以定为 black和 black-translucent-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <!-- 不让百度转码 -->
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <!-- 针对手持设备优化，主要是针对一些老的不识别viewport的浏览器，比如黑莓 -->
+    <meta name="HandheldFriendly" content="true">
+    <!-- 微软的老式浏览器 -->
+    <meta name="MobileOptimized" content="320">
+    <!-- uc强制竖屏 -->
+    <meta name="screen-orientation" content="portrait">
+    <!-- QQ强制竖屏 -->
+    <meta name="x5-orientation" content="portrait">
+    <!-- UC应用模式 -->
+    <meta name="browsermode" content="application">
+    <!-- QQ应用模式 -->
+    <meta name="x5-page-mode" content="app">
+    <!-- windows phone 点击无高光 -->
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="/library/PluginTools.js"></script>
+
+    <script type="text/javascript" src="/library/Blog.js"></script>
+
+</head>
+<body class="body">
+    <div id="ID_Box_Directory" class="directory">
+        <script id="ID_HTML_IMG" type="text/html">
+            <div class="item">
+                <img src="[path]" style="display: block; width: 500px;" />
+            </div>
+        </script>
+        <script id="ID_HTML_File" type="text/html">
+            <div class="item">
+                <p>[content]</p>
+            </div>
+        </script>
+    </div>
+
+    <script type="text/javascript">
+        var blog = null;
+        $(document).ready(function() {
+            blog = new window.Blog({
+                "self_html_name": "index.html",
+                "platform": "gitee",
+                "user_name": "ytsimg",
+                "repositories_name": "Anime",
+            });
+
+            console.log("blog: ", blog);
+
+            blog.RequestFilsInfo();
+        });
+    </script>
+</body>
+</html>
