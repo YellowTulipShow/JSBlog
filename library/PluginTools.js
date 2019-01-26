@@ -45,6 +45,34 @@
     }
 })();
 
+/* 字符串 String */
+(function() {
+    String.prototype.format = function(args) {
+        // js中的string.format
+        // http://www.cnblogs.com/loogn/archive/2011/06/20/2085165.html
+        var result = this;
+        if (arguments.length > 0) {
+            if (arguments.length == 1 && typeof (args) == "object") {
+                for (var key in args) {
+                    if(args[key]!=undefined){
+                        var reg = new RegExp("({" + key + "})", "g");
+                        result = result.replace(reg, args[key]);
+                    }
+                }
+            }
+            else {
+                for (var i = 0; i < arguments.length; i++) {
+                    if (arguments[i] != undefined) {
+                        var reg= new RegExp("({)" + i + "(})", "g");
+                        result = result.replace(reg, arguments[i]);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+})();
+
 /* 扩展 Date 时间 */
 (function() {
     Date.prototype.FormatAsString = function(format) {
