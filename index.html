@@ -42,6 +42,8 @@
     <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <link rel="stylesheet" type="text/css" href="/jekyll/../jekyll/css/base.css">
+
     <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="/library/PluginTools.js"></script>
 
@@ -63,41 +65,27 @@
     </div>
 
     <script type="text/javascript">
-        function Ajax(url,fnSucc,fnFaild) {
-            //1.创建ajax对象
-            if(window.XMLHttpRequest) {
-                // code for IE7+, Firefox, Chrome, Opera, Safari
-                var oAjax=new XMLHttpRequest();
-            } else {
-                // code for IE6, IE5
-                var oAjax=new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            //2.链接服务器（打开服务器的连接）
-            //open(方法，文件名，异步传输)
-            oAjax.open('GET',url,true);
-            // oAjax.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-            //3.发送
-            oAjax.send();
-            //4.接收返回
-            oAjax.onreadystatechange=function(xtr) {
-                console.log("oAjax: ", oAjax);
-                console.log("xtr: ", xtr);
-                if (oAjax.readyState==4) {
-                    if(oAjax.status==200 || oAjax.status==304) {
-                        fnSucc(oAjax.responseText);
-                    } else {
-                        fnFaild(oAjax.status);
-                    }
-                };
-            };
-        }
-        function request_md(callback) {
-            var url = "https://ytsimg.gitee.io/anime/README.md";
+        (function() {
+            var url = "";
+            url = "https://ytsimg.gitee.io/anime/README.md";
+            url = "http://code.jquery.com/jquery-2.1.1.min.js";
+            url = "http://127.0.0.1:5552/README.md";
+            url = "https://yellowtulipshow.github.io/css/base.css";
+
+
+            var box = $("#ID_Box_Directory");
+            var himg = $("#ID_HTML_IMG");
+            var hfile = $("#ID_HTML_File");
+
             var ar = $.ajax({
                 url: url,
-                dataType: "text",
+                dataType: "plain",
                 success: function(text) {
                     console.log("success text:", text);
+                    var item = window.PageInfo.RenderingHTML(hfile, {
+                        "content": text,
+                    });
+                    box.append(item)
                 },
                 error: function(xtr, tx, et) {
                     console.log("error xtr:", xtr, "tx:", tx, "et:", et);
@@ -106,40 +94,7 @@
                     console.log("complete xtr:", xtr, "tx:", tx);
                 },
             });
-            console.log("ar:", ar);
-            ar.done(function (response) {
-                console.log(response);
-            });
-
-            // Ajax(url, callback, function() {
-            //     console.log("error");
-            // });
-
-            // var settings = {
-            //     "async": true,
-            //     "crossDomain": true,
-            //     "url": url,
-            //     "method": "GET",
-            //     "headers": {
-            //         "cache-control": "no-cache",
-            //     }
-            // }
-
-            // $.ajax(settings).done(function (response) {
-            //     console.log(response);
-            // });
-        }
-
-        var box = $("#ID_Box_Directory");
-        var himg = $("#ID_HTML_IMG");
-        var hfile = $("#ID_HTML_File");
-
-        request_md(function(text) {
-            var item = window.PageInfo.RenderingHTML(hfile, {
-                "content": text,
-            });
-            box.append(item)
-        });
+        })();
     </script>
 
     <!-- <script type="text/javascript">
