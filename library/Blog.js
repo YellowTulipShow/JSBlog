@@ -1,20 +1,16 @@
 (function() {
     window.Blog = function(args) {
         this.args = $.extend(this.DefaultArguments(), args);
-
+        this.api = this.PlatformAPI();
+        this.paths = [];
         this.Init();
     }
     window.Blog.prototype = {
         Init: function() {
             var self = this;
-            self.api = $.extend(self.DefaultAPI(), self.GeneratePlatformAPI());
         },
         DefaultArguments: function() {
             var self = this;
-
-            var user_name = "";
-            var repositories_name = "";
-
             return {
                 // 当前页面名称
                 "self_html_name": "index.html",
@@ -23,43 +19,39 @@
                 "platform": "github",
 
                 // 用户名称
-                "user_name": user_name,
+                "owner": "",
 
                 // 项目名称
-                "repositories_name": repositories_name,
-
-                // 访问用户授权码 访问 gitee 需要用到 获取地址: https://gitee.com/api/v5/swagger
-                "access_token": "",
+                "repo": "",
             };
         },
-        GeneratePlatformAPI: function() {
+        PlatformAPI: function() {
             var self = this;
+            var def_api = self.APIGitHub();
+
             var lower = self.args.platform.toLowerCase()
             self.args.platform = lower;
             switch(lower) {
                 case "github":
-                    return self.APIGitHub();
+                    return def_api
                     break;
                 case "gitee":
-                    return self.APIGitee();
+                    return $.extend(def_api, self.APIGitee());
                     break;
                 default:
                     self.args.platform = "github"
-                    return self.GeneratePlatformAPI();
+                    return self.PlatformAPI();
             }
-        },
-        DefaultAPI: function() {
-            var self = this;
-            return {
-                // 请求获取所有文件地址的地址
-                "filesurl": "",
-            };
         },
         APIGitHub: function() {
             var self = this;
             return {
-                "filesurl": "https://api.github.com/repos/" + self.args.user_name + "/" + self.args.repositories_name,
-                "callback": function(json) {
+                url: function(directory) {
+                    "https://api.github.com/repos/{owner}/{repo}/contents"
+                    var furl = "https://api.github.com/repos/{owner}/{repo}";
+                    furl.format(self.args);
+                },
+                paths: function(json) {
                     console.log("github json: ", json)
                 },
             };
@@ -67,61 +59,145 @@
         APIGitee: function() {
             var self = this;
             return {
-                "filesurl": "https://gitee.com/api/v5/repos/" + self.args.user_name + "/" + self.args.repositories_name + "/git/gitee/trees/master?recursive=1",
-                "callback": function(json) {
+                url: function(directory) {
+                    if (/gitee\.com\/api\//gi.test(directory)) {
+                        return directory;
+                    }
+                    var furl = "https://gitee.com/api/v5/repos/{owner}/{repo}/git/gitee/trees/master?recursive=1";
+                    return furl.format(self.args);
+                },
+                paths: function(json) {
                     console.log("gitee json: ", json);
-                    var tree = json.tree;
 
-                    var root = "https://"+self.args.user_name+".gitee.io/"+self.args.repositories_name+"/";
+                    var root = "";
+                    if (self.args.repo == self.args.owner || self.args.repo == self.args.owner + ".gitee.io") {
+                        root = "https://{owner}.gitee.io/";
+                    } else {
+                        root = "https://{owner}.gitee.io/{repo}/";
+                    }
+                    root = root.format(self.args);
 
-                    var box = $("#ID_Box_Directory");
-                    var himg = $("#ID_HTML_IMG");
-                    var hfile = $("#ID_HTML_File");
-                    for (var i = 0; i < tree.length; i++) {
-                        var model = tree[i]
-                        if (model.type === "tree") {
-                            console.log("tree 目录: ", model.path);
+                    var arr = [];
+                    for (var i = 0; i < json.tree.length; i++) {
+                        var m = json.tree[i]
+                        if (m.type === "tree") {
                             continue;
                         }
-
-                        if (/(jpg|png|gif)$/gi.test(model.path)) {
-                            var item = window.PageInfo.RenderingHTML(himg, {
-                                "path": root + model.path,
-                            });
-                            box.append(item)
-                        } else {
-                            self.RequestFilsContent(root + model.path, function(text) {
-                                var item = window.PageInfo.RenderingHTML(hfile, {
-                                    "content": text,
-                                });
-                                box.append(item)
-                            });
-                        }
+                        var info = self.Info(false, root + m.path);
+                        arr.push(info);
                     }
+                    return arr;
                 },
             };
         },
-        RequestFilsInfo: function() {
+        Info: function(isdirectory, url, name, path) {
             var self = this;
+            return {
+                isdir: isdirectory,
+                url: url,
+                name: name,
+                path: path,
+            };
+        },
+
+        // ------
+
+        Generate: function() {
+            var self = this;
+            self.RequestPaths("");
+        },
+
+        RequestPaths: function(directory) {
+            var self = this;
+            var api = self.api;
+            var rurl = api.url(directory);
+            if (window.CheckData.IsStringNull(rurl)) {
+                return;
+            }
             window.AjaxRequest.LocalGet({
-                url: self.api.filesurl,
+                url: rurl,
                 EventSuccess: function(json) {
-                    self.api.callback(json);
+                    var paths = api.paths(json);
+                    if (window.CheckData.IsSizeEmpty(paths)) {
+                        console.log("rurl:", rurl);
+                        console.log("json:", json);
+                        console.log("api:", api);
+                        console.log("paths: null!");
+                        return;
+                    }
+                    for (var i = 0; i < paths.length; i++) {
+                        var info = paths[i]
+                        if (info.isdir) {
+                            self.RequestPaths(info.path);
+                        } else {
+                            self.UpdataPage(info);
+                        }
+                    }
                 },
             });
         },
+
+        UpdataPage: function(info) {
+            var self = this;
+            console.log("UpdataPage.info:", info);
+
+            var box = $("#ID_Box_Directory");
+            var himg = $("#ID_HTML_IMG");
+            var hfile = $("#ID_HTML_File");
+
+            if (/(jpg|png|gif)$/gi.test(info.url)) {
+                var item = window.PageInfo.RenderingHTML(himg, {
+                    "path": info.url,
+                });
+                box.append(item)
+            }
+        },
+
         RequestFilsContent: function(fileurl, callback) {
             var self = this;
             $.get(fileurl, function (data, textStauts) {
                 console.log("textStauts:", textStauts, "data:", data);
                 callback(data)
             });
+
+            // ------
+
             // window.AjaxRequest.LocalGet({
             //     url: fileurl,
             //     EventSuccess: function(text) {
             //         callback(text);
             //     },
             // });
+
+            // ------
+
+            var url = "";
+            url = "https://ytsimg.gitee.io/anime/README.md";
+            url = "http://code.jquery.com/jquery-2.1.1.min.js";
+            url = "http://127.0.0.1:5552/README.md";
+            url = "https://yellowtulipshow.github.io/css/base.css";
+
+            var box = $("#ID_Box_Directory");
+            var himg = $("#ID_HTML_IMG");
+            var hfile = $("#ID_HTML_File");
+
+            var ar = $.ajax({
+                url: url,
+                dataType: "plain",
+                success: function(text) {
+                    console.log("success text:", text);
+                    var item = window.PageInfo.RenderingHTML(hfile, {
+                        "content": text,
+                    });
+                    box.append(item)
+                },
+                error: function(xtr, tx, et) {
+                    console.log("error xtr:", xtr, "tx:", tx, "et:", et);
+                },
+                complete: function(xtr, tx) {
+                    console.log("complete xtr:", xtr, "tx:", tx);
+                },
+            });
         }
     };
 })();

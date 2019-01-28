@@ -42,13 +42,9 @@
     <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-    <link rel="stylesheet" type="text/css" href="/jekyll/../jekyll/css/base.css">
-
-    <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="/library/PluginTools.js"></script>
-
     <script type="text/javascript" src="/library/Blog.js"></script>
-
 </head>
 <body class="body">
     <div id="ID_Box_Directory" class="directory">
@@ -65,62 +61,19 @@
     </div>
 
     <script type="text/javascript">
-        (function() {
-            var url = "";
-            url = "https://ytsimg.gitee.io/anime/README.md";
-            url = "http://code.jquery.com/jquery-2.1.1.min.js";
-            url = "http://127.0.0.1:5552/README.md";
-            url = "https://yellowtulipshow.github.io/css/base.css";
-
-
-            var box = $("#ID_Box_Directory");
-            var himg = $("#ID_HTML_IMG");
-            var hfile = $("#ID_HTML_File");
-
-            var ar = $.ajax({
-                url: url,
-                dataType: "plain",
-                success: function(text) {
-                    console.log("success text:", text);
-                    var item = window.PageInfo.RenderingHTML(hfile, {
-                        "content": text,
-                    });
-                    box.append(item)
-                },
-                error: function(xtr, tx, et) {
-                    console.log("error xtr:", xtr, "tx:", tx, "et:", et);
-                },
-                complete: function(xtr, tx) {
-                    console.log("complete xtr:", xtr, "tx:", tx);
-                },
-            });
-        })();
-    </script>
-
-    <script type="text/javascript">
-        var template1="我是{0}，今年{1}了";
-        var template2="我是{name}，今年{age}了";
-        var result1=template1.format("loogn",22);
-        var result2=template2.format({name:"loogn",age:22});
-
-        console.log("result1:", result1);
-        console.log("result2:", result2);
-    </script>
-
-    <!-- <script type="text/javascript">
         var blog = null;
         $(document).ready(function() {
             blog = new window.Blog({
                 "self_html_name": "index.html",
                 "platform": "gitee",
-                "user_name": "ytsimg",
-                "repositories_name": "Anime",
+                "owner": "ytsimg",
+                "repo": "Blog",
             });
 
             console.log("blog: ", blog);
 
-            blog.RequestFilsInfo();
+            blog.Generate();
         });
-    </script> -->
+    </script>
 </body>
 </html>
