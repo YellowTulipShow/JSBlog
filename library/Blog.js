@@ -23,6 +23,9 @@
 
                 // 项目名称
                 "repo": "",
+
+                // 回调文件信息处理
+                "callback": function(file_info) {},
             };
         },
         PlatformAPI: function() {
@@ -99,14 +102,10 @@
                 path: path,
             };
         },
-
-        // ------
-
-        Generate: function() {
+        Request: function() {
             var self = this;
-            self.RequestPaths("");
+            self.RequestPaths(".");
         },
-
         RequestPaths: function(directory) {
             var self = this;
             var api = self.api;
@@ -130,29 +129,12 @@
                         if (info.isdir) {
                             self.RequestPaths(info.path);
                         } else {
-                            self.UpdataPage(info);
+                            self.args.callback(info);
                         }
                     }
                 },
             });
         },
-
-        UpdataPage: function(info) {
-            var self = this;
-            console.log("UpdataPage.info:", info);
-
-            var box = $("#ID_Box_Directory");
-            var himg = $("#ID_HTML_IMG");
-            var hfile = $("#ID_HTML_File");
-
-            if (/(jpg|png|gif)$/gi.test(info.url)) {
-                var item = window.PageInfo.RenderingHTML(himg, {
-                    "path": info.url,
-                });
-                box.append(item)
-            }
-        },
-
         RequestFilsContent: function(fileurl, callback) {
             var self = this;
             $.get(fileurl, function (data, textStauts) {
