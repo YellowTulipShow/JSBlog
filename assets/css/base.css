@@ -36,6 +36,7 @@ body { font-size: 24px; background-color: rgb(240,240,240); }
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 
+/* 主体 */
 .body {
     width: 100%;
     height: auto;
@@ -46,6 +47,8 @@ body { font-size: 24px; background-color: rgb(240,240,240); }
     z-index: 1;
     background-repeat: repeat;
 }
+
+/* 模型盒子 */
 .ModelBox,
 .ModelBoxInner {
     max-width: 880px;

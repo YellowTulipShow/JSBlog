@@ -50,17 +50,39 @@
     <script type="text/javascript" src="./library/js/blog.js"></script>
 </head>
 <body class="body">
-    <div id="ID_Box_Directory" class="directory">
-        <script id="ID_HTML_IMG" type="text/html">
-            <div class="item">
-                <img src="[path]" style="display: block; width: 500px;" />
+    <div class="body">
+        <div class="Header">
+            <div class="section">
+                <div class="avatar">
+                    <img src="https://avatars3.githubusercontent.com/u/29710592" />
+                </div>
+                <div class="owner">
+                    <a class="a span">YellowTulipShow</a>
+                </div>
             </div>
-        </script>
-        <script id="ID_HTML_File" type="text/html">
-            <div class="item">
-                <p>[content]</p>
+            <div class="section">
+                <div class="repo">
+                    <span class="span">JSBlog</span>
+                </div>
+                <div class="description">
+                    <span class="span">JS 版本静态博客内容获取</span>
+                </div>
+                <div class="buttons">
+                    <div class="btn">
+                        <a class="a span" href="https://github.com/YellowTulipShow/JSBlog">View on GitHub</a>
+                    </div>
+                </div>
             </div>
-        </script>
+        </div>
+
+        <div class="Content"></div>
+
+        <div class="Dialog Loading">
+            <div class="icon LoadingGif"></div>
+            <div class="prompt">
+                <span class="span">加载中...</span>
+            </div>
+        </div>
     </div>
 
     <script type="text/javascript">
@@ -86,7 +108,7 @@
             });
             console.log("blog: ", blog);
 
-            blog.Request();
+            // blog.Request();
         });
     </script>
 </body>
