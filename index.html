@@ -54,7 +54,7 @@
         <div class="Header">
             <div class="section">
                 <div class="avatar">
-                    <img src="https://avatars3.githubusercontent.com/u/29710592" />
+                    <img class="img" src="https://avatars3.githubusercontent.com/u/29710592" />
                 </div>
                 <div class="owner">
                     <a class="a span">YellowTulipShow</a>
@@ -69,18 +69,29 @@
                 </div>
                 <div class="buttons">
                     <div class="btn">
-                        <a class="a span" href="https://github.com/YellowTulipShow/JSBlog">View on GitHub</a>
+                        <a class="a span" href="https://github.com/YellowTulipShow/JSBlog">访问GitHub</a>
+                        <a class="a span" href="https://github.com/YellowTulipShow/JSBlog/issues/new">提出您的问题</a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="Content"></div>
+        <div class="Dialog Loading Show AbsHorizontalVerticalCenter">
+            <div class="Box">
+                <div class="icon LoadingGif"></div>
+                <div class="prompt">
+                    <span class="span">加载中...</span>
+                </div>
+            </div>
+        </div>
 
-        <div class="Dialog Loading">
-            <div class="icon LoadingGif"></div>
-            <div class="prompt">
-                <span class="span">加载中...</span>
+        <div class="ModelBox Content">
+            <div id="ID_Box_Directory" class="IMGLibrary">
+                <script id="ID_HTML_IMG" type="text/html">
+                <div class="li">
+                    <img class="img" src="[src]" />
+                </div>
+                </script>
             </div>
         </div>
     </div>
@@ -90,7 +101,6 @@
         $(document).ready(function() {
             var box = $("#ID_Box_Directory");
             var himg = $("#ID_HTML_IMG");
-            var hfile = $("#ID_HTML_File");
 
             blog = new window.Blog({
                 platform: "gitee",
