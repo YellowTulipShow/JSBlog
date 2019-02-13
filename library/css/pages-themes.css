@@ -47,13 +47,16 @@ https://pages-themes.github.io/time-machine/
     width: 100%;
     height: auto;
     text-align: center;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
 }
     .Header .section {
         display: inline-block;
         overflow: hidden;
         position: relative;
         width: auto;
-        height: 5em;
+        height: auto;
 
         padding: 1.5em 3.5em;
         background-image: url(https://pages-themes.github.io/midnight/assets/images/nav-bg.gif);
@@ -72,78 +75,69 @@ https://pages-themes.github.io/time-machine/
             overflow: hidden;
             position: relative;
             float: left;
+            width: auto;
+            height: 3em;
+            text-align: center;
         }
+            .Header .box + .box {
+                margin-left: 1em;
+            }
+            .Header .box .span {
+                display: block;
+                /*font-size: 1.5em;*/
+                color: #fff;
+                height: 3em;
+                line-height: 3em;
+            }
         .Header .avatar {
             display: block;
-            width: 5em;
-            height: 5em;
-            border: 2px solid #000;
-            margin-top: -2px;
-            margin-left: -2px;
+            width: 3em;
+            height: 3em;
+            /*border: 1px solid #000;*/
 
-            -moz-border-radius: 1em;
-            -webkit-border-radius: 1em;
-            border-radius: 1em;
+            -webkit-box-shadow: 0 0 3px #fff;
+            -moz-box-shadow: 0 0 3px #fff;
+            -ms-box-shadow: 0 0 3px #fff;
+            -o-box-shadow: 0 0 3px #fff;
+            box-shadow: 0 0 3px #fff;
+
+            -moz-border-radius: .3em;
+            -webkit-border-radius: .3em;
+            border-radius: .3em;
         }
             .Header .avatar .img {
                 display: block;
                 width: 100%;
                 height: 100%;
             }
-        .Header .owner {
-            display: block;
-            width: auto;
-            height: 2em;
-            text-align: center;
-        }
+        .Header .owner {}
             .Header .owner .a {}
-            .Header .owner .span {
-                display: block;
-                font-size: 1em;
-                color: #fff;
-                height: 2em;
-                line-height: 2em;
-            }
-        .Header .repo {
-            display: block;
-            width: auto;
-            height: 3em;
-            text-align: center;
-        }
-            .Header .repo .span {
-                display: block;
-                font-size: 1em;
-                color: #777;
-                height: 3em;
-                line-height: 3em;
-            }
-        .Header .description {
-            display: block;
-            width: 10em;
-            height: auto;
-        }
+            .Header .owner .span {}
+        .Header .repo {}
+            .Header .repo .span {}
+        .Header .description {}
             .Header .description .span {}
         .Header .buttons {
-            display: block;
-            overflow: hidden;
-            position: relative;
-            width: 10em;
-            height: auto;
-
             border: 1px solid #666;
+
+            -moz-border-radius: .5em;
+            -webkit-border-radius: .5em;
+            border-radius: .5em;
         }
             .Header .btn {
                 display: block;
                 width: auto;
-                height: auto;
+                height: 100%;
                 float: left;
-                padding: .5em .7em;
+                padding: 0 .7em;
             }
             .Header .btn + .btn {
                 border-left: 1px solid #666;
             }
                 .Header .btn .a {}
-                .Header .btn .span {}
+                .Header .btn .span {
+                    color: #777;
+                }
 
 .Dialog {
     display: none;
