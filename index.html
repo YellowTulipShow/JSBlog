@@ -107,8 +107,8 @@
                 platform: "gitee",
                 owner: "ytsimg",
                 repo: "Blog",
-                callback: function(file_info) {
-                    console.log("callback.file_info:", file_info);
+                filecallback: function(file_info) {
+                    console.log("filecallback.file_info:", file_info);
                     if (/(jpg|png|gif)$/gi.test(file_info.url)) {
                         var item = window.PageInfo.RenderingHTML(himg, {
                             "path": file_info.url,
