@@ -51,7 +51,6 @@ body { font-size: 24px; background-color: rgb(240,240,240); }
 /* 模型盒子 */
 .ModelBox,
 .ModelBoxInner {
-    max-width: 880px;
     height: auto;
     margin: 0 auto;
     position: relative;
@@ -60,6 +59,7 @@ body { font-size: 24px; background-color: rgb(240,240,240); }
     width: 100%;
 }
 .ModelBoxInner {
+    max-width: 1200px;
     width: 87%;
 }
 

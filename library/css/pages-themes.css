@@ -45,6 +45,8 @@ https://pages-themes.github.io/time-machine/
     top: 0;
     left: 0;
     right: 0;
+    z-index: 99;
+
     width: 100%;
     height: auto;
     text-align: center;
@@ -74,11 +76,12 @@ https://pages-themes.github.io/time-machine/
 
         margin: 0 0 .5em 0;
         padding: .5em 2.6em;
-        -webkit-box-shadow: 0px 0px .3em #000, 0 0 .2em #bab8b8 inset;
-        -moz-box-shadow: 0px 0px .3em #000, 0 0 .2em #bab8b8 inset;
-        -ms-box-shadow: 0px 0px .3em #000, 0 0 .2em #bab8b8 inset;
-        -o-box-shadow: 0px 0px .3em #000, 0 0 .2em #bab8b8 inset;
-        box-shadow: 0px 0px .3em #000, 0 0 .2em #bab8b8 inset;
+        /*box-shadow: 0px 0px .3em #000, 0 0 .2em #bab8b8 inset;*/
+        -webkit-box-shadow: 0px 0px .3em #000;
+        -moz-box-shadow: 0px 0px .3em #000;
+        -ms-box-shadow: 0px 0px .3em #000;
+        -o-box-shadow: 0px 0px .3em #000;
+        box-shadow: 0px 0px .3em #000;
     }
         .section .a {}
         .Header .box {
@@ -159,7 +162,7 @@ https://pages-themes.github.io/time-machine/
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 10;
+    z-index: 100;
 
     width: 100%;
     height: 100%;
@@ -261,7 +264,41 @@ https://pages-themes.github.io/time-machine/
             letter-spacing: .2em;
         }
 
-.Content {}
-    .Content .IMGLibrary {}
-        .Content .IMGLibrary .li {}
-            .Content .IMGLibrary .li .img {}
+.Content {
+    display: block;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+
+    margin-top: 3em;
+}
+    .Content .IMGLibrary {
+        display: block;
+        overflow: hidden;
+        position: relative;
+        padding-bottom: 10px;
+    }
+        .Content .IMGLibrary .li {
+            display: block;
+            overflow: hidden;
+            position: relative;
+            float: left;
+            width: auto;
+            height: 8em;
+
+            margin-top: 10px;
+            margin-left: 10px;
+
+            -webkit-box-shadow: 0px 0px 4px #000, 0 0 2px #bab8b8 inset;
+            -moz-box-shadow: 0px 0px 4px #000, 0 0 2px #bab8b8 inset;
+            -ms-box-shadow: 0px 0px 4px #000, 0 0 2px #bab8b8 inset;
+            -o-box-shadow: 0px 0px 4px #000, 0 0 2px #bab8b8 inset;
+            box-shadow: 0px 0px 4px #000, 0 0 2px #bab8b8 inset;
+        }
+            .Content .IMGLibrary .li .img {
+                display: block;
+                overflow: hidden;
+                position: relative;
+                width: auto;
+                height: 100%;
+            }
