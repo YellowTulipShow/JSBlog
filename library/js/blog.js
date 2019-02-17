@@ -25,7 +25,7 @@
                 "repo": "",
 
                 // 回调文件信息处理
-                "callback": function(file_info) {},
+                "filecallback": function(file_info) {},
             };
         },
         PlatformAPI: function() {
@@ -129,17 +129,17 @@
                         if (info.isdir) {
                             self.RequestPaths(info.path);
                         } else {
-                            self.args.callback(info);
+                            self.args.filecallback(info);
                         }
                     }
                 },
             });
         },
-        RequestFilsContent: function(fileurl, callback) {
+        RequestFilsContent: function(fileurl, filecallback) {
             var self = this;
             $.get(fileurl, function (data, textStauts) {
                 console.log("textStauts:", textStauts, "data:", data);
-                callback(data)
+                filecallback(data)
             });
 
             // ------
@@ -147,7 +147,7 @@
             // window.AjaxRequest.LocalGet({
             //     url: fileurl,
             //     EventSuccess: function(text) {
-            //         callback(text);
+            //         filecallback(text);
             //     },
             // });
 
