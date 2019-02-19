@@ -47,6 +47,7 @@
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="./assets/js/base.js"></script>
+    <script type="text/javascript" src="./assets/js/inherit.js"></script>
     <script type="text/javascript" src="./library/js/blog.js"></script>
 </head>
 <body class="body">
@@ -96,14 +97,14 @@
     </div>
 
     <script type="text/javascript">
-        var blog = null;
         // http://localhost:7001/JSBlog/index.html?p=gitee&o=ytsimg&r=Game
         var self_page_query = {
-            platform: window.PageInfo.QueryString("p"),
-            owner: window.PageInfo.QueryString("o"),
-            repo: window.PageInfo.QueryString("r"),
+            platform: window.PageInfo.QueryString("p") || "github",
+            owner: window.PageInfo.QueryString("o") || "YellowTulipShow",
+            repo: window.PageInfo.QueryString("r") || "JSBlog",
         };
 
+        var blog = null;
         $(document).ready(function() {
             var box = $("#ID_Box_Directory");
             var himg = $("#ID_HTML_IMG");

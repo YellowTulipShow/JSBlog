@@ -30,110 +30,162 @@
         },
         PlatformAPI: function() {
             var self = this;
-            var def_api = self.APIGitHub();
-
             var lower = self.args.platform.toLowerCase()
             self.args.platform = lower;
             switch(lower) {
                 case "github":
-                    return def_api
+                    return window.APIGitHub();
                     break;
                 case "gitee":
-                    return $.extend(def_api, self.APIGitee());
+                    return window.APIGitee();
                     break;
                 default:
                     self.args.platform = "github"
                     return self.PlatformAPI();
             }
         },
-        APIGitHub: function() {
-            var self = this;
-            return {
-                url: function(directory) {
-                    "https://api.github.com/repos/{owner}/{repo}/contents"
-                    var furl = "https://api.github.com/repos/{owner}/{repo}";
-                    furl.format(self.args);
-                },
-                paths: function(json) {
-                    console.log("github json: ", json)
-                },
-            };
-        },
-        APIGitee: function() {
-            var self = this;
-            return {
-                url: function(directory) {
-                    if (/gitee\.com\/api\//gi.test(directory)) {
-                        return directory;
-                    }
-                    var furl = "https://gitee.com/api/v5/repos/{owner}/{repo}/git/gitee/trees/master?recursive=1";
-                    return furl.format(self.args);
-                },
-                paths: function(json) {
-                    console.log("gitee json: ", json);
-
-                    var root = "";
-                    if (self.args.repo == self.args.owner || self.args.repo == self.args.owner + ".gitee.io") {
-                        root = "https://{owner}.gitee.io/";
-                    } else {
-                        root = "https://{owner}.gitee.io/{repo}/";
-                    }
-                    root = root.format(self.args);
-
-                    var arr = [];
-                    for (var i = 0; i < json.tree.length; i++) {
-                        var m = json.tree[i]
-                        if (m.type === "tree") {
-                            continue;
-                        }
-                        var info = self.Info(false, root + m.path);
-                        arr.push(info);
-                    }
-                    return arr;
-                },
-            };
-        },
-        Info: function(isdirectory, url, name, path) {
-            var self = this;
-            return {
-                isdir: isdirectory,
-                url: url,
-                name: name,
-                path: path,
-            };
-        },
         Request: function() {
             var self = this;
-            self.RequestPaths(".");
+            self.RequestUser();
+            self.RequestFiles();
         },
-        RequestPaths: function(directory) {
+        RequestFiles: function() {
             var self = this;
             var api = self.api;
-            var rurl = api.url(directory);
+            var rurl = api.files_url();
             if (window.CheckData.IsStringNull(rurl)) {
                 return;
             }
             window.AjaxRequest.LocalGet({
                 url: rurl,
                 EventSuccess: function(json) {
-                    var paths = api.paths(json);
-                    if (window.CheckData.IsSizeEmpty(paths)) {
+                    var files = api.files_callback(json);
+                    if (window.CheckData.IsSizeEmpty(files)) {
                         console.log("rurl:", rurl);
                         console.log("json:", json);
                         console.log("api:", api);
-                        console.log("paths: null!");
+                        console.log("files: null!");
                         return;
                     }
-                    for (var i = 0; i < paths.length; i++) {
-                        var info = paths[i]
-                        if (info.isdir) {
-                            self.RequestPaths(info.path);
+                    for (var i = 0; i < files.length; i++) {
+                        var file = files[i]
+                        if (file.isdir) {
+                            // 递归执行下级目录文件获取
+                            // self.RequestPaths(file.path);
                         } else {
-                            self.args.filecallback(info);
+                            self.args.filecallback(file);
                         }
                     }
                 },
             });
         },
+        RequestUser: function() {
+            var self = this;
+            var api = self.api;
+            var rurl = api.user_url();
+            if (window.CheckData.IsStringNull(rurl)) {
+                return;
+            }
+            window.AjaxRequest.LocalGet({
+                url: rurl,
+                EventSuccess: function(json) {
+                    var user = api.user_callback(json);
+                    self.args.user_callback(user);
+                },
+            });
+        },
     };
+
+})();
+(function() {
+    window.APIGitee = Class.extend({
+        init: function(owner, repo) {
+            this.owner = owner;
+            this.repo = repo;
+        },
+        files_url: function() {
+            var self = this;
+            var furl = "https://gitee.com/api/v5/repos/{owner}/{repo}/git/gitee/trees/master?recursive=1";
+            return furl.format(self);
+        },
+        files_callback: function(json) {
+            var self = this;
+            console.log("gitee json: ", json);
+
+            var root = "";
+            root = "https://{owner}.gitee.io/";
+            if (self.repo !== self.owner && !/.*\.gitee\.io/gi.test(self.repo)) {
+                root += "{repo}/";
+            }
+            root = root.format(self);
+
+            var arr = [];
+            for (var i = 0; i < json.tree.length; i++) {
+                var m = json.tree[i];
+                arr.push({
+                    isdir: m.type === "tree",
+                    url: root + m.path,
+                });
+            }
+            return arr;
+        },
+        user_url: function() {
+            var self = this;
+            var furl = "https://gitee.com/api/v5/users/{owner}";
+            return furl.format(self);
+        },
+        user_callback: function(json) {
+            return {
+                avatar: json.avatar_url,
+            };
+        },
+    });
+    window.APIGitHub = APIGitee.extend({
+        init: function(owner, repo) {
+            this.owner = owner;
+            this.repo = repo;
+        },
+        files_url: function() {
+            var self = this;
+            var furl = "https://api.github.com/repos/{owner}/{repo}/contents";
+            return furl.format(self.args);
+        },
+        files_callback: function(json) {
+            var self = this;
+            console.log("github json: ", json);
+
+            root = self.files_root_path();
+
+            var arr = [];
+            for (var i = 0; i < json.tree.length; i++) {
+                var m = json.tree[i];
+                arr.push({
+                    isdir: m.type === "dir",
+                    url: root + m.path,
+                    name: m.name,
+                });
+            }
+            return arr;
+        },
+        files_root_path: function() {
+            var self = this;
+            var root = "";
+            root = "https://{owner}.github.io/";
+            if (self.repo !== self.owner && !/.*\.github\.io/gi.test(self.repo)) {
+                root += "{repo}/";
+            }
+            root = root.format(self);
+            return root;
+        },
+        user_url: function() {
+            var self = this;
+            var furl = "https://api.github.com/users/{owner}";
+            return furl.format(self);
+        },
+        user_callback: function(json) {
+            return {
+                avatar: json.avatar_url,
+            };
+        },
+    });
 })();
