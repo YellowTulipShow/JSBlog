@@ -25,7 +25,10 @@
                 "repo": "",
 
                 // 回调文件信息处理
-                "filecallback": function(file_info) {},
+                "file_callback": function(file_info) {},
+
+                // 用户信息回调
+                "user_callback": function(user_info) {},
             };
         },
         PlatformAPI: function() {
@@ -34,10 +37,10 @@
             self.args.platform = lower;
             switch(lower) {
                 case "github":
-                    return window.APIGitHub();
+                    return new window.APIGitHub(self.args.owner, self.args.repo);
                     break;
                 case "gitee":
-                    return window.APIGitee();
+                    return new window.APIGitee(self.args.owner, self.args.repo);
                     break;
                 default:
                     self.args.platform = "github"
@@ -73,7 +76,7 @@
                             // 递归执行下级目录文件获取
                             // self.RequestPaths(file.path);
                         } else {
-                            self.args.filecallback(file);
+                            self.args.file_callback(file);
                         }
                     }
                 },
@@ -110,8 +113,6 @@
         },
         files_callback: function(json) {
             var self = this;
-            console.log("gitee json: ", json);
-
             var root = "";
             root = "https://{owner}.gitee.io/";
             if (self.repo !== self.owner && !/.*\.gitee\.io/gi.test(self.repo)) {
@@ -152,8 +153,6 @@
         },
         files_callback: function(json) {
             var self = this;
-            console.log("github json: ", json);
-
             root = self.files_root_path();
 
             var arr = [];

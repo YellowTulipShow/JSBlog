@@ -51,28 +51,38 @@
     <script type="text/javascript" src="./library/js/blog.js"></script>
 </head>
 <body class="body">
+    <script type="text/javascript">
+        // http://localhost:7001/JSBlog/index.html?p=gitee&o=ytsimg&r=Game
+        var spq = {
+            platform: window.PageInfo.QueryString("p") || "github",
+            owner: window.PageInfo.QueryString("o") || "YellowTulipShow",
+            repo: window.PageInfo.QueryString("r") || "JSBlog",
+        };
+    </script>
     <div class="body">
-        <div class="Header">
-            <div class="section">
+        <div id="ID_Header" class="Header">
+            <script id="ID_SectionTitle" type="text/html">
+            <div class="section" >
                 <div class="box avatar">
-                    <img class="img" src="https://avatars3.githubusercontent.com/u/29710592" />
+                    <img class="img" src="[avatar]" />
                 </div>
                 <div class="box">
-                    <span class="span">GitHub</span>
+                    <a class="a span" target="_blank" href="https://[platform].com">[platform]</a>
                 </div>
                 <div class="box">
                     <span class="span">/</span>
                 </div>
                 <div class="box owner">
-                    <a class="a span" target="_blank" href="https://github.com/YellowTulipShow">YellowTulipShow</a>
+                    <a class="a span" target="_blank" href="https://[platform].com/[owner]">[owner]</a>
                 </div>
                 <div class="box">
                     <span class="span">/</span>
                 </div>
                 <div class="box repo">
-                    <a class="a span" target="_blank" href="https://github.com/YellowTulipShow/JSBlog">JSBlog</a>
+                    <a class="a span" target="_blank" href="https://[platform].com/[owner]/[repo]">[repo]</a>
                 </div>
             </div>
+            </script>
         </div>
 
         <div class="Dialog Loading">
@@ -97,30 +107,29 @@
     </div>
 
     <script type="text/javascript">
-        // http://localhost:7001/JSBlog/index.html?p=gitee&o=ytsimg&r=Game
-        var self_page_query = {
-            platform: window.PageInfo.QueryString("p") || "github",
-            owner: window.PageInfo.QueryString("o") || "YellowTulipShow",
-            repo: window.PageInfo.QueryString("r") || "JSBlog",
-        };
-
         var blog = null;
         $(document).ready(function() {
             var box = $("#ID_Box_Directory");
             var himg = $("#ID_HTML_IMG");
 
             blog = new window.Blog({
-                platform: self_page_query.platform,
-                owner: self_page_query.owner,
-                repo: self_page_query.repo,
-                filecallback: function(file_info) {
-                    console.log("filecallback.file_info:", file_info);
+                platform: spq.platform,
+                owner: spq.owner,
+                repo: spq.repo,
+                file_callback: function(file_info) {
+                    // console.log("file_callback.file_info:", file_info);
                     if (/(jpg|png|gif)$/gi.test(file_info.url)) {
                         var item = window.PageInfo.RenderingHTML(himg, {
                             "path": file_info.url,
                         });
                         box.append(item)
                     }
+                },
+                user_callback: function(user_info) {
+                    console.log("user_callback.user_info:", user_info);
+                    var arg = $.extend({}, user_info, spq);
+                    var title = window.PageInfo.RenderingHTML($("#ID_SectionTitle"), arg);
+                    $("#ID_Header").append(title);
                 },
             });
             console.log("blog: ", blog);

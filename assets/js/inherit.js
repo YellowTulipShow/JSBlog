@@ -23,7 +23,9 @@ http://www.cnblogs.com/sanshi/archive/2009/07/14/1523523.html
                 if (baseClass) {
                     this.baseprototype = baseClass.prototype;
                 }
-                this.init.apply(this, arguments);
+                if (this.init) {
+                    this.init.apply(this, arguments);
+                }
             }
         }
         // 如果此类需要从其它类扩展
