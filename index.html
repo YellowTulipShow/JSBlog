@@ -97,14 +97,21 @@
 
     <script type="text/javascript">
         var blog = null;
+        // http://localhost:7001/JSBlog/index.html?p=gitee&o=ytsimg&r=Game
+        var self_page_query = {
+            platform: window.PageInfo.QueryString("p"),
+            owner: window.PageInfo.QueryString("o"),
+            repo: window.PageInfo.QueryString("r"),
+        };
+
         $(document).ready(function() {
             var box = $("#ID_Box_Directory");
             var himg = $("#ID_HTML_IMG");
 
             blog = new window.Blog({
-                platform: "gitee",
-                owner: "ytsimg",
-                repo: "Blog",
+                platform: self_page_query.platform,
+                owner: self_page_query.owner,
+                repo: self_page_query.repo,
                 filecallback: function(file_info) {
                     console.log("filecallback.file_info:", file_info);
                     if (/(jpg|png|gif)$/gi.test(file_info.url)) {
