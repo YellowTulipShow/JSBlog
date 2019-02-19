@@ -135,51 +135,5 @@
                 },
             });
         },
-        RequestFilsContent: function(fileurl, filecallback) {
-            var self = this;
-            $.get(fileurl, function (data, textStauts) {
-                console.log("textStauts:", textStauts, "data:", data);
-                filecallback(data)
-            });
-
-            // ------
-
-            // window.AjaxRequest.LocalGet({
-            //     url: fileurl,
-            //     EventSuccess: function(text) {
-            //         filecallback(text);
-            //     },
-            // });
-
-            // ------
-
-            var url = "";
-            url = "https://ytsimg.gitee.io/anime/README.md";
-            url = "http://code.jquery.com/jquery-2.1.1.min.js";
-            url = "http://127.0.0.1:5552/README.md";
-            url = "https://yellowtulipshow.github.io/css/base.css";
-
-            var box = $("#ID_Box_Directory");
-            var himg = $("#ID_HTML_IMG");
-            var hfile = $("#ID_HTML_File");
-
-            var ar = $.ajax({
-                url: url,
-                dataType: "plain",
-                success: function(text) {
-                    console.log("success text:", text);
-                    var item = window.PageInfo.RenderingHTML(hfile, {
-                        "content": text,
-                    });
-                    box.append(item)
-                },
-                error: function(xtr, tx, et) {
-                    console.log("error xtr:", xtr, "tx:", tx, "et:", et);
-                },
-                complete: function(xtr, tx) {
-                    console.log("complete xtr:", xtr, "tx:", tx);
-                },
-            });
-        }
     };
 })();
