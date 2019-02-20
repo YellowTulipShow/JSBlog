@@ -662,5 +662,13 @@ function jsonpsuccessbackfunction(a,b,c,d,e,f) {}
             s_date = s_date.replace(/-/g,"/");
             return new Date(s_date);
         },
+        ToHttpGETParameter: function(object) {
+            var str = "";
+            for (var key in object) {
+                var value = object[key];
+                str += "&" + key + "=" + value;
+            }
+            return str.substr(1);
+        },
     };
 })();

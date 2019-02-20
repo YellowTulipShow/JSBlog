@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="format-detection" content="telephone=notelphone=no, email=no">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta content="width=device-width,initial-scale=1,user-scalable=no" name="viewport">
+
+    <!-- 站点图标 -->
+    <link type="image/x-icon" rel="shortcut icon" href="https://ytsimg.gitee.io/blog/favicon/favicon.ico" />
+
+    <title>博客内容浏览</title>
+    <meta name="keywords" content="blog, YellowTulipShow" />
+    <meta name="description" content="JSBlog 脚本博客, 遍历展现开源项目所有文件, 源代码 + 图片" />
+
+    <link rel="stylesheet" type="text/css" href="https://yellowtulipshow.github.io/JSBlog/assets/css/base.css">
+    <script type="text/javascript" src="https://yellowtulipshow.github.io/JSBlog/assets/js/base.js"></script>
+    <style type="text/css">
+        html, body {
+            overflow: hidden;
+        }
+        .ModelBox {
+            height: auto;
+            min-height: 100%;
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <iframe id="IDiframe" class="body ModelBox" src="https://yellowtulipshow.github.io/JSBlog/index.html"></iframe>
+    <script type="text/javascript">
+        var iframe = document.getElementById('IDiframe');
+        iframe.src += "?" + window.ConvertTool.ToHttpGETParameter({
+            p: "gitee",
+            o: "ytsimg",
+            r: "Game",
+        });
+    </script>
+</body>
+</html>
