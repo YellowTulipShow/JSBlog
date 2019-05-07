@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script type="text/javascript">
+function Base64() {
+    // private property
+    _keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+
+    // public method for encoding
+    this.encode = function (input) {
+        var output = "";
+        var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+        var i = 0;
+        input = _utf8_encode(input);
+        while (i < input.length) {
+            chr1 = input.charCodeAt(i++);
+            chr2 = input.charCodeAt(i++);
+            chr3 = input.charCodeAt(i++);
+            enc1 = chr1 >> 2;
+            enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+            enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+            enc4 = chr3 & 63;
+            if (isNaN(chr2)) {
+                enc3 = enc4 = 64;
+            } else if (isNaN(chr3)) {
+                enc4 = 64;
+            }
+            output = output +
+            _keyStr.charAt(enc1) + _keyStr.charAt(enc2) +
+            _keyStr.charAt(enc3) + _keyStr.charAt(enc4);
+        }
+        return output;
+    }
+
+    // public method for decoding
+    this.decode = function (input) {
+        var output = "";
+        var chr1, chr2, chr3;
+        var enc1, enc2, enc3, enc4;
+        var i = 0;
+        input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+        while (i < input.length) {
+            enc1 = _keyStr.indexOf(input.charAt(i++));
+            enc2 = _keyStr.indexOf(input.charAt(i++));
+            enc3 = _keyStr.indexOf(input.charAt(i++));
+            enc4 = _keyStr.indexOf(input.charAt(i++));
+            chr1 = (enc1 << 2) | (enc2 >> 4);
+            chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+            chr3 = ((enc3 & 3) << 6) | enc4;
+            output = output + String.fromCharCode(chr1);
+            if (enc3 != 64) {
+                output = output + String.fromCharCode(chr2);
+            }
+            if (enc4 != 64) {
+                output = output + String.fromCharCode(chr3);
+            }
+        }
+        output = _utf8_decode(output);
+        return output;
+    }
+
+    // private method for UTF-8 encoding
+    _utf8_encode = function (string) {
+        string = string.replace(/\r\n/g,"\n");
+        var utftext = "";
+        for (var n = 0; n < string.length; n++) {
+            var c = string.charCodeAt(n);
+            if (c < 128) {
+                utftext += String.fromCharCode(c);
+            } else if((c > 127) && (c < 2048)) {
+                utftext += String.fromCharCode((c >> 6) | 192);
+                utftext += String.fromCharCode((c & 63) | 128);
+            } else {
+                utftext += String.fromCharCode((c >> 12) | 224);
+                utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+                utftext += String.fromCharCode((c & 63) | 128);
+            }
+
+        }
+        return utftext;
+    }
+
+    // private method for UTF-8 decoding
+    _utf8_decode = function (utftext) {
+        var string = "";
+        var i = 0;
+        var c = c1 = c2 = 0;
+        while ( i < utftext.length ) {
+            c = utftext.charCodeAt(i);
+            if (c < 128) {
+                string += String.fromCharCode(c);
+                i++;
+            } else if((c > 191) && (c < 224)) {
+                c2 = utftext.charCodeAt(i+1);
+                string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+                i += 2;
+            } else {
+                c2 = utftext.charCodeAt(i+1);
+                c3 = utftext.charCodeAt(i+2);
+                string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+                i += 3;
+            }
+        }
+        return string;
+    }
+}
+
+// https://api.github.com/repos/YellowTulipShow/JSBlog/contents/IdeaLog.md?ref=master
+var b = new Base64();
+var v = b.decode("IyDmg7Pms5Xml6Xlv5cKCiMjIDIwMTktMDItMTkKICAgIOWPkeW4g+WujCB2\nMS4wLjAg5LmL5ZCO55qE5L+u5pS55oOz5rOVOgogICAgMS4g5YGa5LiA5Liq\nICLkvb/nlKjmoYjkvosiIiDnlKjmiLflpI3liLbov5nkuKogImluZGV4Lmh0\nbWwiIOaWh+S7tgogICAgMi4g5LmL5YmN5Z+65pys5LiK55So5LiN5YiwIEdp\ndEh1YiDnmoTlm77niYfmtY/op4gsIEFQSUdpdEh1YiDpnIDopoHmtYvor5Xo\nsIPor5Xku6PnoIEKICAgIDMuIOS9v+eUqOS6huWIq+S6uueahCBKYXZhU2Ny\naXB0IOe7p+aJv+exuywg6Ieq5bex5YaZ5LiA5aWXCiAgICA0LiDpgJLlvZLm\nk43kvZwg55uu5b2V5LiO5paH5Lu2IOaTjeS9nOeVjOmdouabtOaUueaIkCBX\naW5kb3cg6LWE5rqQ566h55CG5Zmo55qE5qC35a2QCiAgICA1LiDmm7TmlLnn\nlYzpnaLlkI4sIOWPr+S7pea3u+WKoOS4gOS6m+S6uuaAp+WMluaMiemSrjog\n5YWo6YOo5bGV56S65Zu+54mHLi4uIOS5i+exu+eahC4uLgogICAgNi4g6K+3\n5rGC5paH5Lu2LCBqcyDlgZrkuI3liLAsIOaJgOS7peaDs+azleaYr+WcqOiH\nquW3seeahOacjeWKoeWZqOerr+W8gOS4gOS4qiBBUEksIOivt+axgui/meS4\nqkFQSSwg6L+U5Zue6ZyA6KaB55qE5paH5Lu25YaF5a655pWw5o2uLCDmg7Pn\nlKggUHl0aG9uIOWGmeWHuuadpS4KCiMjIDIwMTktMDEtMjU6CiAgICDnnIvl\nhbbku5bnmoTljZrlrqLmqKHmnb/pg73lvojpurvng6YsIOWcqOmhueebruag\nueebruW9leS4iui/mOmcgOimgeW+iOWkmueahOmFjee9ruaWh+S7tiwg5YaZ\n5LiA56+H5paH56ug5b+F6aG75Yqg6Kej6YeKCiAgICDmiJHnmoTmg7Pms5Xm\nmK86CiAgICDmoLnnm67lvZXkuIrlj6rmnInkuIDkuKrmqKHmnb/nqIvluo/m\nlofku7blpLksIOmFjee9ruS7gOS5iOeahOmDveaUvuWIsOi/memHjOmdogog\nICAg6YeM6Z2i5LuA5LmI5qC35YaN6K+0LCDmnIDlpJrlnKjmoLnnm67lvZXk\nuIrliqDkuIDkuKog5ZCv5Yqo5paH5Lu257G75Ly85LqOIGBpbmRleC5odG1s\nYCDov5nnp40KICAgIOWFtuS7lueUqOaIt+Wwhui/meS4quaWh+S7tuWkueWk\njeWItuWIsCDljZrlrqLnmoTmoLnnm67lvZXlsLHlj6/ku6XkuoYsIOS4jemc\ngOimgeWIq+mineWklueahOS7u+S9leaTjeS9nAogICAg56iL5bqP6Ieq5Yqo\n6YGN5Y6G5qC555uu5b2V5LiL5omA5pyJ5paH5Lu2LCDmjInnhafmlofku7bn\nsbvlnovoh6rliqjmnoTlu7og5Y2a5a6i56m66Ze0OgogICAgICAgIOWbvueJ\nhzog5oyJ54Wn5paH5Lu25aS554CR5biD5rWB5b2i5byP5rWP6KeICiAgICAg\nICAg5rqQ5Luj56CB5paH5Lu2OiAqLmNzICouamF2YSAqLnB5IOWxleekuuWF\ntua6kOS7o+eggemrmOS6rgogICAgICAgIGh0bWw6IOebtOaOpeWxleekugog\nICAg6L+H56iL5Lit5qC55o2u5q+P5Liq55uu5b2V5LiL55qEIFJFQURNRS5t\nZCDmlofku7Yg6K+75Y+W56ys5LiA5qC355qEIGAjIOWkp+agh+mimGAg5L2c\n5Li655uu5b2V5ZCN56ewCiAgICDnlKjmiLflj6rpnIDopoHlhbPms6jpobnn\nm67lhoXlrrnmnKzouqssIOaJgOacieaWh+S7tumBjeWOhuWxleekuuWNs+WP\nrywg5YaZ5Liq5Y2a5a6iLCDlhpnkuKrlrp7kvovov5jpnIDopoHml6XmnJ8g\n5LuA5LmI5qC85byP5LuA5LmI55qECiAgICDnroDnm7TlpKrpurvng6bkuoYs\nIOeugOebtOa1qui0ueaXtumXtOeUn+WRvS4uLgo=\n");
+console.log(v);
+    </script>
+</head>
+<body>
+
+</body>
+</html>
