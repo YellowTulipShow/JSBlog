@@ -388,7 +388,7 @@ function jsonpsuccessbackfunction(a,b,c,d,e,f) {}
             }
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
             var r = location_search_string.substr(1).match(reg);
-            return r != null ? unescape(r[2]) : null;
+            return r != null ? decodeURI(r[2]) : null;
         },
         RenderingHTML: function(jqElement, jsonobj) {
             // 功能: 渲染生成 HTML
