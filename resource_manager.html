@@ -46,21 +46,34 @@
     <![endif]-->
 
     <link rel="stylesheet" type="text/css" href="./assets/css/base.css">
-    <link rel="stylesheet" type="text/css" href="./library/css/pages-themes.css">
+    <link rel="stylesheet" type="text/css" href="./assets/css/resource_manager.css">
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="./assets/js/base.js"></script>
-    <script type="text/javascript" src="./assets/js/inherit.js"></script>
-    <script type="text/javascript" src="./library/js/blog.js"></script>
 </head>
-<body class="body">
-    <script type="text/javascript">
-        // http://localhost:7001/JSBlog/index.html?p=gitee&o=ytsimg&r=Game
-        var spq = {
-            platform: window.PageInfo.QueryString("p") || "github",
-            owner: window.PageInfo.QueryString("o") || "YellowTulipShow",
-            repo: window.PageInfo.QueryString("r") || "JSBlog",
-        };
-    </script>
+<body>
+<!-- ============================== HTML 结构主体内容 ============================== -->
+    <div class="body">
+        <div class="Control"></div>
+
+        <div class="Box Platform"></div>
+        <div class="Box Owner"></div>
+        <div class="Box Repo"></div>
+
+        <div class="Box Files"></div>
+        <div class="Box Pictures">
+            <div class=""></div>
+        </div>
+    </div>
+<!-- ============================== JavaScript 代码逻辑 ============================== -->
+<script type="text/javascript">
+(function() {
+    this.info = {
+        platform: this.PageInfo.QueryString("platform") || "github",
+        owner: this.PageInfo.QueryString("owner") || "YellowTulipShow",
+        repo: this.PageInfo.QueryString("repo") || "JSBlog",
+    };
+})();
+</script>
 </body>
 </html>
