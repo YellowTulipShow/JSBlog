@@ -54,15 +54,57 @@
 <body>
 <!-- ============================== HTML 结构主体内容 ============================== -->
     <div class="body">
+        <!-- 控制器 -->
         <div class="Control"></div>
 
-        <div class="Box Platform"></div>
-        <div class="Box Owner"></div>
-        <div class="Box Repo"></div>
+        <!-- 配置 -->
+        <div class="ConfigInfo">
+            <!-- 平台 -->
+            <div class="Box Platform">
+                <div class="Item">
+                    <img class="img" src="image/icon/github.png" />
+                    <span class="span">GitHub</span>
+                </div>
+                <div class="Item">
+                    <img class="img" src="image/icon/gitee.png" />
+                    <span class="span">Gitee&nbsp;码云</span>
+                </div>
+            </div>
+            <!-- 所属人 -->
+            <div class="Box Owner">
+                <div class="Content">
+                    <input id="IDText_Owner" class="input text" type="text" />
+                </div>
+            </div>
+            <!-- 项目 -->
+            <div class="Box Repo">
+                <div class="Content"
+                    id="IDHTML_RepoContent"
+                    data-template="IDHTML_RepoItem">
+                    <script id="IDHTML_RepoItem" type="text/html">
+                    <div class="Item">
+                        <span class="span">[Name]</span>
+                        <span class="span">[Description]</span>
+                        <span class="span">[Language]</span>
+                    </div>
+                    </script>
+                </div>
+            </div>
+        </div>
 
+        <!-- 文件集合 -->
         <div class="Box Files"></div>
+        <!-- 图片集合 -->
         <div class="Box Pictures">
-            <div class=""></div>
+            <div class="Content"
+                id="IDHTML_PicturesContent"
+                data-template="IDHTML_PicturesItem">
+                <script id="IDHTML_PicturesItem" type="text/html">
+                <div class="Item">
+                    <img class="img" src="[Path]" alt="[Title]" />
+                </div>
+                </script>
+            </div>
         </div>
     </div>
 <!-- ============================== JavaScript 代码逻辑 ============================== -->
@@ -73,6 +115,10 @@
         owner: this.PageInfo.QueryString("owner") || "YellowTulipShow",
         repo: this.PageInfo.QueryString("repo") || "JSBlog",
     };
+})();
+</script>
+<script type="text/javascript">
+(function() {
 })();
 </script>
 </body>
