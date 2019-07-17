@@ -1,5 +1,38 @@
 .body {}
 
+.Decoration {
+    display: block;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    height: 0;
+}
+    .Decoration .Icon {
+        display: block;
+        overflow: hidden;
+        position: fixed;
+        z-index: 1;
+    }
+        .Decoration .Icon .img {
+            display: block;
+            overflow: hidden;
+            position: relative;
+            width: inherit;
+            height: inherit;
+        }
+        .Decoration .Icon.top { top: .5em; }
+        .Decoration .Icon.bottom { bottom: .5em; }
+        .Decoration .Icon.left { left: .5em; }
+        .Decoration .Icon.right { right: .5em; }
+    .Decoration .EmbossedPattern {
+        width: 6.3em;
+        height: 6.3em;
+    }
+    .Decoration .Name {
+        width: auto;
+        height: 1.9em;
+    }
+
 /*<!-- 控制器 -->*/
 .Control {}
 
