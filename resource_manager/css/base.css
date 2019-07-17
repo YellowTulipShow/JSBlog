@@ -1,0 +1,244 @@
+@charset "utf-8";
+* {
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    -webkit-tap-highlight-color: transparent;
+    font-family: "Microsoft YaHei", "微软雅黑", Heiti, "黑体", Arial, Helvetica, STHeiTi, sans-serif;
+
+    -moz-box-sizing: inherit;
+    -webkit-box-sizing: inherit;
+    box-sizing: inherit;
+}
+html { -webkit-text-size-adjust: none; overflow-y: scroll; }
+a { text-decoration: none; display: block; }
+.a:active,
+.a:hover,
+a:active,
+a:hover { filter: alpha(opacity=70); -moz-opacity: .7; opacity: .7; }
+img { max-width: 100%; }
+h1,h2,h3,h4,h5,h6 { font-size: 100%; font-weight: 500; }
+li,ol,ul { list-style: none; }
+em,i { font-style: normal; }
+del { text-decoration: line-through; }
+input,select,textarea { font-size: 100%; vertical-align: middle; }
+input,button,select,textarea { outline: 0; }
+input { width: 100%; border: 0 none; }
+textarea { resize: none; }
+table { border-collapse: collapse; border-spacing: 0; }
+caption,th { text-align: left; }
+address,caption,cite,code,dfn,em,th,var { font-style: normal; font-weight: 500; }
+html { font-size: 50px; }
+body { font-size: 24px; background-color: rgb(240,240,240); }
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+/* 主体 */
+.body {
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+    background-repeat: repeat;
+}
+
+/* 模型盒子 */
+.ModelBox,
+.ModelBoxInner {
+    height: auto;
+    margin: 0 auto;
+    position: relative;
+}
+.ModelBox {
+    width: 100%;
+}
+.ModelBoxInner {
+    max-width: 1200px;
+    width: 87%;
+}
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+/* 隐藏并且需要存在的盒子 */
+.HideExistBox {
+    display: block !important;
+    overflow: hidden !important;
+    position: fixed !important;
+    top: -1px !important;
+    left: -1px !important;
+    right: auto !important;
+    bottom: auto !important;
+    z-index: -999999999 !important;
+    width: 1px !important;
+    height: 1px !important;
+    filter: alpha(opacity=0) !important;
+    -moz-opacity: 0 !important;
+    opacity: 0 !important;
+}
+
+/* 锁定窗口尺寸 一般使用在 html 和 body 元素上 */
+.LockWindowSize {
+    display: block !important;
+    overflow: hidden !important;
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+}
+
+/* 加载Gif图片 */
+.LoadingGif {
+    background-image: url("https://ytsimg.gitee.io/blog/yts_github_io/html/icon_loading.png");
+    background-size: 3em 3em;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    -webkit-animation: LoadingGifRotate 2s infinite linear;
+    -moz-animation: LoadingGifRotate 2s infinite linear;
+    -o-animation: LoadingGifRotate 2s infinite linear;
+    animation: LoadingGifRotate 2s infinite linear;
+}
+    .LoadingGif.paused {
+        -webkit-animation-play-state: paused;
+        -moz-animation-play-state: paused;
+        -o-animation-play-state: paused;
+        animation-play-state: paused;
+    }
+    @-webkit-keyframes LoadingGifRotate {
+        0% {
+            -webkit-transform: rotate(0deg);
+            -moz-transform: rotate(0deg);
+            -ms-transform: rotate(0deg);
+            -o-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+        100% {
+            -webkit-transform: rotate(360deg);
+            -moz-transform: rotate(360deg);
+            -ms-transform: rotate(360deg);
+            -o-transform: rotate(360deg);
+            transform: rotate(360deg);
+        }
+    }
+    @-moz-keyframes LoadingGifRotate {
+        0% {
+            -webkit-transform: rotate(0deg);
+            -moz-transform: rotate(0deg);
+            -ms-transform: rotate(0deg);
+            -o-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+        100% {
+            -webkit-transform: rotate(360deg);
+            -moz-transform: rotate(360deg);
+            -ms-transform: rotate(360deg);
+            -o-transform: rotate(360deg);
+            transform: rotate(360deg);
+        }
+    }
+    @-o-keyframes LoadingGifRotate {
+        0% {
+            -webkit-transform: rotate(0deg);
+            -moz-transform: rotate(0deg);
+            -ms-transform: rotate(0deg);
+            -o-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+        100% {
+            -webkit-transform: rotate(360deg);
+            -moz-transform: rotate(360deg);
+            -ms-transform: rotate(360deg);
+            -o-transform: rotate(360deg);
+            transform: rotate(360deg);
+        }
+    }
+    @keyframes LoadingGifRotate {
+        0% {
+            -webkit-transform: rotate(0deg);
+            -moz-transform: rotate(0deg);
+            -ms-transform: rotate(0deg);
+            -o-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+        100% {
+            -webkit-transform: rotate(360deg);
+            -moz-transform: rotate(360deg);
+            -ms-transform: rotate(360deg);
+            -o-transform: rotate(360deg);
+            transform: rotate(360deg);
+        }
+    }
+
+/* 详细信息的扩展 */
+.DetailsExpanded {}
+    .DetailsExpanded .UpperLayer {
+        position: relative;
+        z-index: 100 !important;
+    }
+    .DetailsExpanded.Show .Summary::before {
+        display: block;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 99;
+        cursor: default;
+        content: " ";
+        background: transparent;
+    }
+
+/* 绝对定位-水平垂直居中 */
+.AbsHorizontalVerticalCenter {
+    display: block !important;
+    top: 50% !important;
+    left: 50% !important;
+    -webkit-transform: translate(-50%, -50%) !important;
+    -moz-transform: translate(-50%, -50%) !important;
+    -ms-transform: translate(-50%, -50%) !important;
+    transform: translate(-50%, -50%) !important;
+
+    position: absolute;
+    z-index: 1;
+}
+
+/* 过渡动画一秒 */
+.TransitionOneSecond {
+    -webkit-transition: all 1s;
+    -moz-transition: all 1s;
+    -o-transition: all 1s;
+    transition: all 1s;
+}
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+@media screen and (min-width: 0px) { html { font-size: 32.00px; } body { font-size: 16.00px; } }
+@media screen and (max-width: 320px) { html { font-size: 21.33px; } body { font-size: 9px; } }
+@media screen and (min-width: 320px) { html { font-size: 21.33px; } body { font-size: 9px; } }
+@media screen and (min-width: 360px) { html { font-size: 24.00px; } body { font-size: 9.50px; } }
+@media screen and (min-width: 384px) { html { font-size: 25.60px; } body { font-size: 10.00px; } }
+@media screen and (min-width: 400px) { html { font-size: 26.67px; } body { font-size: 11.00px; } }
+@media screen and (min-width: 480px) { html { font-size: 32.00px; } body { font-size: 12.00px; } }
+@media screen and (min-width: 540px) { html { font-size: 32.00px; } body { font-size: 14.00px; } }
+@media screen and (min-width: 650px) { html { font-size: 32.00px; } body { font-size: 16.00px; } }
+@media screen and (min-width: 750px) { html { font-size: 32.00px; } body { font-size: 16.00px; } }
+@media screen and (min-width: 880px) { html { font-size: 32.00px; } body { font-size: 16.00px; } }
+
+/* 手机端样式 */
+@media screen and (max-width: 1200px) {
+    .IsMobileHide { display: none !important; }
+}
+/* 电脑端样式 */
+@media screen and (min-width: 1200px) {
+    .IsPCHide { display: none !important; }
+    .IsPCOpacity {
+        filter: alpha(opacity=0) !important;
+        -moz-opacity: 0 !important;
+        opacity: 0 !important;
+    }
+}
