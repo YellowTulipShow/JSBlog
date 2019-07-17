@@ -48,7 +48,8 @@
     <link rel="stylesheet" type="text/css" href="css/base.css">
     <link rel="stylesheet" type="text/css" href="css/index.css">
 
-    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <!-- <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script> -->
+    <script type="text/javascript" src="js/jquery.v1.10.2.min.js"></script>
     <script type="text/javascript" src="js/base.js"></script>
 </head>
 <body>
@@ -60,24 +61,26 @@
         <!-- 配置 -->
         <div class="ConfigInfo">
             <!-- 平台 -->
-            <div class="Box Platform">
-                <div class="Item">
-                    <img class="img" src="image/icon/github.png" />
-                    <span class="span">GitHub</span>
-                </div>
-                <div class="Item">
-                    <img class="img" src="image/icon/gitee.png" />
-                    <span class="span">Gitee&nbsp;码云</span>
+            <div class="FullBox Platform Show">
+                <div class="Content">
+                    <div class="Item">
+                        <img class="img" src="image/icon/github.png" />
+                        <span class="span">GitHub</span>
+                    </div>
+                    <div class="Item">
+                        <img class="img" src="image/icon/gitee.png" />
+                        <span class="span">Gitee&nbsp;码云</span>
+                    </div>
                 </div>
             </div>
             <!-- 所属人 -->
-            <div class="Box Owner">
+            <div class="FullBox Owner">
                 <div class="Content">
                     <input id="IDText_Owner" class="input text" type="text" />
                 </div>
             </div>
             <!-- 项目 -->
-            <div class="Box Repo">
+            <div class="FullBox Repo">
                 <div class="Content"
                     id="IDHTML_RepoContent"
                     data-template="IDHTML_RepoItem">
