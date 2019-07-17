@@ -81,14 +81,14 @@
                 <div class="Content"
                     id="IDHTML_RepoContent"
                     data-template="IDHTML_RepoItem">
-                    <script id="IDHTML_RepoItem" type="text/html">
+                </div>
+                <script id="IDHTML_RepoItem" type="text/html">
                     <div class="Item">
                         <span class="span">[Name]</span>
                         <span class="span">[Description]</span>
                         <span class="span">[Language]</span>
                     </div>
-                    </script>
-                </div>
+                </script>
             </div>
         </div>
 
@@ -99,15 +99,38 @@
             <div class="Content"
                 id="IDHTML_PicturesContent"
                 data-template="IDHTML_PicturesItem">
-                <script id="IDHTML_PicturesItem" type="text/html">
+            </div>
+            <script id="IDHTML_PicturesItem" type="text/html">
                 <div class="Item">
                     <img class="img" src="[Path]" alt="[Title]" />
                 </div>
-                </script>
-            </div>
+            </script>
         </div>
     </div>
-<!-- ============================== JavaScript 代码逻辑 ============================== -->
+<!-- ============================== JavaScript 页面逻辑 ============================== -->
+<script type="text/javascript">
+(function() {
+    var IDHTML_RepoItem = $("#IDHTML_RepoItem");
+    this.PrintHTML_RepoItem = function(arge) {
+        arge = $.extend({
+            'Name': '项目名称',
+            'Description': '项目描述',
+            'Language': '项目语言',
+        }, arge);
+        return window.PageInfo.RenderingHTML(IDHTML_RepoItem, arge);
+    };
+
+    var IDHTML_PicturesItem = $("#IDHTML_PicturesItem");
+    this.PrintHTML_PicturesItem = function(arge) {
+        arge = $.extend({
+            'Path': '图片路径',
+            'Title': '图片描述',
+        }, arge);
+        return window.PageInfo.RenderingHTML(IDHTML_PicturesItem, arge);
+    };
+})();
+</script>
+<!-- ============================== JavaScript 功能逻辑 ============================== -->
 <script type="text/javascript">
 (function() {
     this.info = {
