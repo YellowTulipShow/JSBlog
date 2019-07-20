@@ -78,35 +78,68 @@
         <div class="ConfigInfo">
             <!-- 平台 -->
             <div class="FullBox Platform user_select_none Show">
-                <div class="Content">
+                <div class="Content" id="IDHTML_Box_RepoContent"></div>
+                <script type="text/html" id="IDHTML_Item_Platform">
                     <div class="Item">
-                        <img class="img" src="image/icon/github.png" />
-                        <span class="span">GitHub</span>
+                        <img class="img" src="[IconPath]" />
+                        <span class="span">[Name]</span>
                     </div>
-                    <div class="Item">
-                        <img class="img" src="image/icon/gitee.png" />
-                        <span class="span">Gitee&nbsp;码云</span>
-                    </div>
-                </div>
+                </script>
+                <script type="text/javascript">
+                    (function() {
+                        var IDHTML_Item_Platform = $("#IDHTML_Item_Platform");
+                        this.PrintHTML_Item_Platform = function(arge) {
+                            arge = $.extend({
+                                'IconPath': 'image/icon/github.png',
+                                'Name': 'GitHub',
+                            }, arge);
+                            return window.PageInfo.RenderingHTML(IDHTML_Item_Platform, arge);
+                        };
+                        var box = $("#IDHTML_Box_RepoContent");
+                        box.append(PrintHTML_Item_Platform({
+                            'IconPath': 'image/icon/github.png',
+                            'Name': 'GitHub',
+                        }));
+                        box.append(PrintHTML_Item_Platform({
+                            'IconPath': 'image/icon/gitee.png',
+                            'Name': 'Gitee&nbsp;码云',
+                        }));
+                    })();
+                </script>
             </div>
+
             <!-- 所属人 -->
             <div class="FullBox Owner">
                 <div class="Content">
                     <input id="IDText_Owner" class="input text" type="text" />
                 </div>
             </div>
+
             <!-- 项目 -->
             <div class="FullBox Repo">
                 <div class="Content"
                     id="IDHTML_RepoContent"
-                    data-template="IDHTML_RepoItem">
+                    data-template="IDHTML_Item_Repo">
                 </div>
-                <script id="IDHTML_RepoItem" type="text/html">
+                <script id="IDHTML_Item_Repo" type="text/html">
                     <div class="Item">
                         <span class="span">[Name]</span>
                         <span class="span">[Description]</span>
                         <span class="span">[Language]</span>
                     </div>
+                </script>
+                <script type="text/javascript">
+                    (function() {
+                        var IDHTML_Item_Repo = $("#IDHTML_Item_Repo");
+                        this.PrintHTML_Item_Repo = function(arge) {
+                            arge = $.extend({
+                                'Name': '项目名称',
+                                'Description': '项目描述',
+                                'Language': '项目语言',
+                            }, arge);
+                            return window.PageInfo.RenderingHTML(IDHTML_Item_Repo, arge);
+                        };
+                    })();
                 </script>
             </div>
         </div>
@@ -117,36 +150,30 @@
         <div class="Box Pictures">
             <div class="Content"
                 id="IDHTML_PicturesContent"
-                data-template="IDHTML_PicturesItem">
+                data-template="IDHTML_Item_Pictures">
             </div>
-            <script id="IDHTML_PicturesItem" type="text/html">
+            <script id="IDHTML_Item_Pictures" type="text/html">
                 <div class="Item">
                     <img class="img" src="[Path]" alt="[Title]" />
                 </div>
+            </script>
+            <script type="text/javascript">
+                (function() {
+                    var IDHTML_Item_Pictures = $("#IDHTML_Item_Pictures");
+                    this.PrintHTML_Item_Pictures = function(arge) {
+                        arge = $.extend({
+                            'Path': '图片路径',
+                            'Title': '图片描述',
+                        }, arge);
+                        return window.PageInfo.RenderingHTML(IDHTML_Item_Pictures, arge);
+                    };
+                })();
             </script>
         </div>
     </div>
 <!-- ============================== JavaScript 页面逻辑 ============================== -->
 <script type="text/javascript">
 (function() {
-    var IDHTML_RepoItem = $("#IDHTML_RepoItem");
-    this.PrintHTML_RepoItem = function(arge) {
-        arge = $.extend({
-            'Name': '项目名称',
-            'Description': '项目描述',
-            'Language': '项目语言',
-        }, arge);
-        return window.PageInfo.RenderingHTML(IDHTML_RepoItem, arge);
-    };
-
-    var IDHTML_PicturesItem = $("#IDHTML_PicturesItem");
-    this.PrintHTML_PicturesItem = function(arge) {
-        arge = $.extend({
-            'Path': '图片路径',
-            'Title': '图片描述',
-        }, arge);
-        return window.PageInfo.RenderingHTML(IDHTML_PicturesItem, arge);
-    };
 })();
 </script>
 <!-- ============================== JavaScript 功能逻辑 ============================== -->
@@ -161,6 +188,7 @@
 </script>
 <script type="text/javascript">
 (function() {
+
 })();
 </script>
 </body>
