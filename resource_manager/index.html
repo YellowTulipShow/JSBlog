@@ -53,6 +53,13 @@
     <script type="text/javascript" src="js/base.js"></script>
 </head>
 <body>
+
+    <div id="content"></div>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    document.getElementById('content').innerHTML =
+      marked('# Marked in the browser\n\nRendered by **marked**.');
+  </script>
 <!-- ============================== HTML 结构主体内容 ============================== -->
     <div class="body">
         <!-- 装饰 -->
