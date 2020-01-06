@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="SuiYan,博客,blog,静态博客,安装,教程,搭建,部署">
+    <meta name="description" content="这是一个快速学习JavaScript的学习笔记">
+    <meta name="author" content="J.sky">
+    <link rel="shortcut icon" href="favicon.ico">
+    <title>SuiYan 碎言静态Blog.</title>
+    <!-- Markdown.js  JS Markdown解析器 -->
+    <script src="marked.min.js"></script>
+    <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+</head>
+<body class="body">
+    <code id="IDmd"></code>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // footer.html
+            // $(".footer").load("assets/templates/footer.html", function (response, status, request) {
+            //     if (status == "success")
+            //         console.warn("如果你能看到这里说明你已经很牛逼撩！欢迎进群讨论学习Q群:217840699");
+
+            // });
+            $("#IDmd").load("IdeaLog.md", "", function (response, status, request) {
+                if (status == "success") {
+                    console.log("如果你能看到这里说明你已经很牛逼撩！欢迎进群讨论学习Q群:217840699");
+                } else {
+                    console.log("失败了!");
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>
