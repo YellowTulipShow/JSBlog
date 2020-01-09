@@ -45,16 +45,28 @@
     <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-    <link rel="stylesheet" type="text/css" href="./assets/css/base.css">
-    <link rel="stylesheet" type="text/css" href="./library/css/pages-themes.css">
-
-    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script type="text/javascript" src="./assets/js/base.js"></script>
-    <script type="text/javascript" src="./assets/js/inherit.js"></script>
-    <script type="text/javascript" src="./library/js/blog.js"></script>
+    <script type="text/javascript" src="./assets/package/jquery/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="./assets/js/dbStore.js"></script>
 </head>
 <body class="body">
     <script type="text/javascript">
+        (function() {
+            if (!dbStore.IsSupportIndexedDB()) {
+                console.log("不支持 indexedDB API!");
+            }
+            var db = new window.dbStore({
+                name: 'YellowTulipShow/-ArticleNotes',
+            });
+            console.log(db);
+        })();
+    </script>
+
+
+
+
+
+
+    <!-- <script type="text/javascript">
         // http://localhost:7001/JSBlog/index.html?p=gitee&o=ytsimg&r=Game
         var spq = {
             platform: window.PageInfo.QueryString("p") || "github",
@@ -62,53 +74,6 @@
             repo: window.PageInfo.QueryString("r") || "JSBlog",
         };
     </script>
-    <div class="body">
-        <div id="ID_Header" class="Header">
-            <script id="ID_SectionTitle" type="text/html">
-            <div class="section" >
-                <div class="box avatar">
-                    <img class="img" src="[avatar]" />
-                </div>
-                <div class="box">
-                    <a class="a span" target="_blank" href="https://[platform].com">[platform]</a>
-                </div>
-                <div class="box">
-                    <span class="span">/</span>
-                </div>
-                <div class="box owner">
-                    <a class="a span" target="_blank" href="https://[platform].com/[owner]">[owner]</a>
-                </div>
-                <div class="box">
-                    <span class="span">/</span>
-                </div>
-                <div class="box repo">
-                    <a class="a span" target="_blank" href="https://[platform].com/[owner]/[repo]">[repo]</a>
-                </div>
-            </div>
-            </script>
-        </div>
-
-        <div class="Dialog Loading">
-            <div class="Close"></div>
-            <div class="Box AbsHorizontalVerticalCenter">
-                <div class="icon LoadingGif"></div>
-                <div class="prompt">
-                    <span class="span">加载中...</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="ModelBox Content">
-            <div id="ID_Box_Directory" class="IMGLibrary">
-                <script id="ID_HTML_IMG" type="text/html">
-                <div class="li">
-                    <img class="img" src="[path]" />
-                </div>
-                </script>
-            </div>
-        </div>
-    </div>
-
     <script type="text/javascript">
         var blog = null;
         $(document).ready(function() {
@@ -139,6 +104,6 @@
 
             blog.Request();
         });
-    </script>
+    </script> -->
 </body>
 </html>
