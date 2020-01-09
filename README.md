@@ -22,3 +22,6 @@
 * [Jekyll 开源地址](https://github.com/jekyll/jekyll)
 * [程序员如何搭建自己的个人博客](https://www.cnblogs.com/forezp/p/9852069.html)
 * [一篇文章搞定Github API 调用 (v3）](https://segmentfault.com/a/1190000015144126)
+* [Web 开发技术Web API 接口参考 - IndexedDB](https://developer.mozilla.org/zh-CN/docs/Web/API/IndexedDB_API)
+* [HTML5本地存储——IndexedDB - 知乎](https://zhuanlan.zhihu.com/p/27419332)
+* [HTML5 indexedDB前端本地存储数据库实例教程](https://www.zhangxinxu.com/wordpress/2017/07/html5-indexeddb-js-example/)

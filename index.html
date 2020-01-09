@@ -53,6 +53,7 @@
         (function() {
             if (!dbStore.IsSupportIndexedDB()) {
                 console.log("不支持 indexedDB API!");
+                return;
             }
             var db = new window.dbStore({
                 name: 'YellowTulipShow/-ArticleNotes',
@@ -60,11 +61,6 @@
             console.log(db);
         })();
     </script>
-
-
-
-
-
 
     <!-- <script type="text/javascript">
         // http://localhost:7001/JSBlog/index.html?p=gitee&o=ytsimg&r=Game

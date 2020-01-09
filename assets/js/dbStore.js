@@ -12,7 +12,6 @@
         __init__: function() {
         },
         __DefaultConfig__: function(argumentConfig) {
-
             var config = {
                 'name': 'project',
             };
