@@ -1,114 +1,28 @@
 (function() {
-    window.Blog = function(args) {
-        this.args = $.extend(this.DefaultArguments(), args);
-        this.api = this.PlatformAPI();
-        this.paths = [];
-        this.Init();
-    }
-    window.Blog.prototype = {
-        Init: function() {
-            var self = this;
+    var IAPI = Class.extend({
+        __init__: function(owner, repo) {
+            this.owner = owner;
+            this.repo = repo;
         },
-        DefaultArguments: function() {
-            var self = this;
-            return {
-                // 当前页面名称
-                "self_html_name": "index.html",
-
-                // 平台类型 选项: github, gitee
-                "platform": "github",
-
-                // 用户名称
-                "owner": "",
-
-                // 项目名称
-                "repo": "",
-
-                // 回调文件信息处理
-                "file_callback": function(file_info) {},
-
-                // 用户信息回调
-                "user_callback": function(user_info) {},
-            };
+        files_url: function() {
         },
-        PlatformAPI: function() {
-            var self = this;
-            var lower = self.args.platform.toLowerCase()
-            self.args.platform = lower;
-            switch(lower) {
-                case "github":
-                    return new window.APIGitHub(self.args.owner, self.args.repo);
-                    break;
-                case "gitee":
-                    return new window.APIGitee(self.args.owner, self.args.repo);
-                    break;
-                default:
-                    self.args.platform = "github"
-                    return self.PlatformAPI();
-            }
+        files_callback: function(json) {
         },
-        Request: function() {
-            var self = this;
-            self.RequestUser();
-            self.RequestFiles();
+        user_url: function() {
         },
-        RequestFiles: function() {
-            var self = this;
-            var api = self.api;
-            var rurl = api.files_url();
-            if (window.CheckData.IsStringNull(rurl)) {
-                return;
-            }
-            window.AjaxRequest.LocalGet({
-                url: rurl,
-                EventSuccess: function(json) {
-                    var files = api.files_callback(json);
-                    if (window.CheckData.IsSizeEmpty(files)) {
-                        console.log("rurl:", rurl);
-                        console.log("json:", json);
-                        console.log("api:", api);
-                        console.log("files: null!");
-                        return;
-                    }
-                    for (var i = 0; i < files.length; i++) {
-                        var file = files[i]
-                        if (file.isdir) {
-                            // 递归执行下级目录文件获取
-                            // self.RequestPaths(file.path);
-                        } else {
-                            self.args.file_callback(file);
-                        }
-                    }
-                },
-            });
+        user_callback: function(json) {
         },
-        RequestUser: function() {
-            var self = this;
-            var api = self.api;
-            var rurl = api.user_url();
-            if (window.CheckData.IsStringNull(rurl)) {
-                return;
-            }
-            window.AjaxRequest.LocalGet({
-                url: rurl,
-                EventSuccess: function(json) {
-                    var user = api.user_callback(json);
-                    self.args.user_callback(user);
-                },
-            });
-        },
-    };
+    });
+    this.IAPI = IAPI;
 
-})();
-(function() {
-    window.APIGitee = Class.extend({
-        init: function(owner, repo) {
+    this.APIGitee = IAPI.extend({
+        __init__: function(owner, repo) {
             this.owner = owner;
             this.repo = repo;
         },
         files_url: function() {
             var self = this;
-            var furl = "https://gitee.com/api/v5/repos/{owner}/{repo}/git/gitee/trees/master?recursive=1";
+            var furl = "https://gitee.com/IAPI/v5/repos/{owner}/{repo}/git/gitee/trees/master?recursive=1";
             return furl.format(self);
         },
         files_callback: function(json) {
@@ -132,7 +46,7 @@
         },
         user_url: function() {
             var self = this;
-            var furl = "https://gitee.com/api/v5/users/{owner}";
+            var furl = "https://gitee.com/IAPI/v5/users/{owner}";
             return furl.format(self);
         },
         user_callback: function(json) {
@@ -141,15 +55,15 @@
             };
         },
     });
-    window.APIGitHub = APIGitee.extend({
-        init: function(owner, repo) {
+    this.APIGitHub = IAPI.extend({
+        __init__: function(owner, repo) {
             this.owner = owner;
             this.repo = repo;
         },
         files_url: function() {
             var self = this;
-            var furl = "https://api.github.com/repos/{owner}/{repo}/contents";
-            return furl.format(self.args);
+            var furl = "https://IAPI.github.com/repos/{owner}/{repo}/contents";
+            return furl.format(self.config.;
         },
         files_callback: function(json) {
             var self = this;
@@ -178,7 +92,7 @@
         },
         user_url: function() {
             var self = this;
-            var furl = "https://api.github.com/users/{owner}";
+            var furl = "https://IAPI.github.com/users/{owner}";
             return furl.format(self);
         },
         user_callback: function(json) {
@@ -187,4 +101,98 @@
             };
         },
     });
+})();
+
+(function() {
+    var default_
+
+    var winObject = this;
+    function FactoryGitAPI(platform, owner, repo) {
+        platform = platform || "GitHub";
+        owner = owner || "YellowTulipShow";
+        repo = repo || "JSBlog";
+        var lower = platform.toString().toLowerCase();
+        switch(lower) {
+            case "github":
+                return new winObject.APIGitHub(owner, repo);
+            case "gitee":
+                return new winObject.APIGitee(owner, repo);
+            default:
+                return FactoryGitAPI("GitHub", owner, repo);
+        }
+    }
+
+    var Blog = function(args) {
+        this.config = this.__DefaultConfig__(argumentConfig);
+        this.IAPI = winObject.IAPI;
+        this.__init__();
+    }
+    Blog.prototype = {
+        __DefaultConfig__: function(argumentConfig) {
+            var config = {
+                platform: "GitHub",
+                owner: "YellowTulipShow",
+                repo: "JSBlog",
+                file_callback: function(file_info) {},
+                user_callback: function(user_info) {},
+            };
+            return $.extend(config, argumentConfig);
+        },
+        __init__: function() {
+            var self = this;
+
+        },
+        Request: function() {
+            var self = this;
+            self.RequestUser();
+            self.RequestFiles();
+        },
+        RequestFiles: function() {
+            var self = this;
+            var IAPI = self.IAPI;
+            var rurl = IAPI.files_url();
+            if (window.CheckData.IsStringNull(rurl)) {
+                return;
+            }
+            window.AjaxRequest.LocalGet({
+                url: rurl,
+                EventSuccess: function(json) {
+                    var files = IAPI.files_callback(json);
+                    if (window.CheckData.IsSizeEmpty(files)) {
+                        console.log("rurl:", rurl);
+                        console.log("json:", json);
+                        console.log("IAPI:", IAPI);
+                        console.log("files: null!");
+                        return;
+                    }
+                    for (var i = 0; i < files.length; i++) {
+                        var file = files[i]
+                        if (file.isdir) {
+                            // 递归执行下级目录文件获取
+                            // self.RequestPaths(file.path);
+                        } else {
+                            self.config.file_callback(file);
+                        }
+                    }
+                },
+            });
+        },
+        RequestUser: function() {
+            var self = this;
+            var IAPI = self.IAPI;
+            var rurl = IAPI.user_url();
+            if (window.CheckData.IsStringNull(rurl)) {
+                return;
+            }
+            window.AjaxRequest.LocalGet({
+                url: rurl,
+                EventSuccess: function(json) {
+                    var user = IAPI.user_callback(json);
+                    self.config.user_callback(user);
+                },
+            });
+        },
+    };
+    Blog.prototype.constructor = Blog;
+    this.Blog = Blog;
 })();

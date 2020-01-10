@@ -23,8 +23,8 @@ http://www.cnblogs.com/sanshi/archive/2009/07/14/1523523.html
                 if (baseClass) {
                     this.baseprototype = baseClass.prototype;
                 }
-                if (this.init) {
-                    this.init.apply(this, arguments);
+                if (this.__init__) {
+                    this.__init__.apply(this, arguments);
                 }
             }
         }
