@@ -71,6 +71,21 @@
         }
         return result;
     }
+    String.prototype.trimStart = function(symbol) {
+        symbol = symbol || "\\s+"
+        var pattern = "^{0}".format(symbol);
+        var re = new RegExp(pattern, "g");
+        return this.replace(re, "");
+    }
+    String.prototype.trimEnd = function(symbol) {
+        symbol = symbol || "\\s+"
+        var pattern = "{0}$".format(symbol);
+        var re = new RegExp(pattern, "g");
+        return this.replace(re, "");
+    }
+    String.prototype.trim = function(symbol) {
+        return this.trimStart(symbol).trimEnd(symbol);
+    }
 })();
 
 /* 扩展 Date 时间 */

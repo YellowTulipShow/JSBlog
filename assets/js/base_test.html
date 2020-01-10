@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="format-detection" content="telephone=notelphone=no, email=no">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta content="width=device-width,initial-scale=1,user-scalable=no" name="viewport">
+
+    <!-- 站点图标 -->
+    <link type="image/x-icon" rel="shortcut icon" href="https://ytsimg.gitee.io/blog/favicon/favicon.ico" />
+
+    <title>JSBlog 博客首页</title>
+    <meta name="keywords" content="js, blog, yellowtulipshow, github, gitee" />
+    <meta name="description" content="JSBlog 脚本博客, 遍历展现开源项目所有文件, 源代码 + 图片" />
+
+    <!-- 是否启用 WebApp 全屏模式，删除苹果默认的工具栏和菜单栏 -->
+    <meta name="apple-touch-fullscreen" content="yes">
+    <!-- 设置苹果工具栏颜色:默认值为 default，可以定为 black和 black-translucent-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <!-- 不让百度转码 -->
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <!-- 针对手持设备优化，主要是针对一些老的不识别viewport的浏览器，比如黑莓 -->
+    <meta name="HandheldFriendly" content="true">
+    <!-- 微软的老式浏览器 -->
+    <meta name="MobileOptimized" content="320">
+    <!-- uc强制竖屏 -->
+    <meta name="screen-orientation" content="portrait">
+    <!-- QQ强制竖屏 -->
+    <meta name="x5-orientation" content="portrait">
+    <!-- UC应用模式 -->
+    <meta name="browsermode" content="application">
+    <!-- QQ应用模式 -->
+    <meta name="x5-page-mode" content="app">
+    <!-- windows phone 点击无高光 -->
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript" src="../package/jquery/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="./base.js"></script>
+</head>
+<body class="body">
+    <script type="text/javascript">
+        /* string 对象扩展 */
+
+        var str = "{name} 年龄: {age} 岁了!".format({ name: "张三", age: 23, });
+        console.log("string.format({name}):", str);
+
+        str = "{0} 年龄: {1} 岁了!".format("张三", 23);
+        console.log("string.format({0}):", str);
+
+        str = "  22 55 00 33  ";
+        console.log("str:", str);
+        console.log("string.trimStart(): '{0}'".format(str.trimStart()));
+        console.log("string.trimEnd(): '{0}'".format(str.trimEnd()));
+        console.log("string.trim(): '{0}'".format(str.trim()));
+
+        str = "14%@22 55 00 3314%@";
+        console.log("str:", str);
+        console.log("string.trimStart('14%@'): '{0}'".format(str.trimStart('14%@')));
+        console.log("string.trimEnd('14%@'): '{0}'".format(str.trimEnd('14%@')));
+        console.log("string.trim('14%@'): '{0}'".format(str.trim('14%@')));
+    </script>
+</body>
+</html>

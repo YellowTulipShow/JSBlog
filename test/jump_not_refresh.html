@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="format-detection" content="telephone=notelphone=no, email=no">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta content="width=device-width,initial-scale=1,user-scalable=no" name="viewport">
+    <title></title>
+</head>
+<body>
+<button onclick="jump()" value="点击">执行</button>
+<script type="text/javascript">
+    function jump() {
+        document.write("sss");
+        var url = window.location.href;
+        var valiable = url.split('?')[0];
+        valiable += "?efejfieliw";
+        window.history.pushState({},0,valiable);
+        // window.location.href = valiable;
+    }
+</script>
+</body>
+</html>
