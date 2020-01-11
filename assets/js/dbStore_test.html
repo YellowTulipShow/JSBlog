@@ -179,7 +179,7 @@
             var objectStore = transaction.objectStore(dbName);
             console.log('objectStore:', objectStore);
             // 获取存储的对应键的存储对象
-            var objectStoreRequest = objectStore.get(id);
+            var objectStoreRequest = objectStore.getValue(id);
             // 获取成功后替换当前数据
             objectStoreRequest.onsuccess = function(event) {
                 // 当前数据

@@ -88,6 +88,19 @@
     }
 })();
 
+/* 对象 Object */
+(function() {
+    Object.prototype.getValue = function(name, default_value) {
+        if (arguments.length <= 0) {
+            console.log(arguments);
+            return null;
+        }
+        name = name.toString();
+        var value = this[name];
+        return value ? value : default_value;
+    }
+})();
+
 /* 扩展 Date 时间 */
 (function() {
     Date.prototype.FormatAsString = function(format) {
@@ -260,7 +273,7 @@ function jsonpsuccessbackfunction(a,b,c,d,e,f) {}
                 url: config.url,
                 type: config.type,
                 data: config.data,
-                dataType: config.dataType ? config.dataType : "json",
+                dataType: config.dataType || "json",
                 async: config.async,
                 success: function(json) {
                     config.EventSuccess(json);

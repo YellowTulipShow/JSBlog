@@ -45,46 +45,35 @@
     <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-    <script type="text/javascript" src="../package/jquery/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../package/jquery/jquery-3.4.1.js"></script>
     <script type="text/javascript" src="./base.js"></script>
+    <script type="text/javascript" src="./inherit.js"></script>
+    <script type="text/javascript" src="./api.js"></script>
+    <script type="text/javascript" src="./blog.js"></script>
 </head>
 <body class="body">
     <script type="text/javascript">
-        /* string 对象扩展 */
-
-        var str = "{name} 年龄: {age} 岁了!".format({ name: "张三", age: 23, });
-        console.log("string.format({name}):", str);
-
-        str = "{0} 年龄: {1} 岁了!".format("张三", 23);
-        console.log("string.format({0}):", str);
-
-        str = "  22 55 00 33  ";
-        console.log("str:", str);
-        console.log("string.trimStart(): '{0}'".format(str.trimStart()));
-        console.log("string.trimEnd(): '{0}'".format(str.trimEnd()));
-        console.log("string.trim(): '{0}'".format(str.trim()));
-
-        str = "14%@22 55 00 3314%@";
-        console.log("str:", str);
-        console.log("string.trimStart('14%@'): '{0}'".format(str.trimStart('14%@')));
-        console.log("string.trimEnd('14%@'): '{0}'".format(str.trimEnd('14%@')));
-        console.log("string.trim('14%@'): '{0}'".format(str.trim('14%@')));
     </script>
-
     <script type="text/javascript">
-        /* Object 对象扩展 */
-        var model = {
-            "name": "张三",
-            "age": 23,
-        };
-        console.log("model:", model);
-        console.log("model.get:", model.get);
-        console.log("model['name']:", model['name']);
-        console.log("model['sex']:", model['sex']);
-        console.log("model.getValue('name'):", model.getValue('name'));
-        console.log("model.getValue('name'):", model.getValue('name', '刘备'));
-        console.log("model.getValue('sex'):", model.getValue('sex'));
-        console.log("model.getValue('sex'):", model.getValue('sex', '女'));
+        var blog = new window.Blog({
+            platform: "GitHub",
+            owner: "YellowTulipShow",
+            repo: "JSBlog",
+        });
+        var ss = {}
+        // $.each(ss, function(key, value) {
+        //     console.log(key, value);
+        // })
+        for (var key in ss) {
+            console.log(key);
+        }
+        // console.log("blog:", blog);
+        // blog.RequestUser(function(modelUser) {
+        //     console.log("modelUser:", modelUser);
+        // });
+        // blog.RequestRepoContent(function(modelRepoContent) {
+        //     console.log("modelRepoContent:", modelRepoContent);
+        // });
     </script>
 </body>
 </html>
