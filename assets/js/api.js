@@ -8,6 +8,7 @@
         toUserModel: function(jsonResult) { },
         toRepoContentURL: function(path) { },
         toRepoContentModel: function(jsonResult) { },
+        toRepoFileModel: function(jsonResult) { },
     });
     IAPI.modelUser = function() {
         return {
@@ -36,9 +37,13 @@
             "link": "",
             "link_git": "",
             "link_html": "",
+        };
+    }
+    IAPI.modelRepoFile = function() {
+        return $.extend(IAPI.modelRepoContent(), {
             "content": "",
             "encoding": "",
-        };
+        });
     }
     this.IAPI = IAPI;
 
@@ -55,24 +60,21 @@
             });
         },
         toUserModel: function(jsonResult) {
-            console.log('github.toUserModel');
             var self = this;
             var j = jsonResult;
-            if (j.getValue("message", null) == null) {
+            if (Object.get(j, "message", null) != null) {
                 return null;
             }
-            var model = IAPI.modelUser();
-            model = $.extend(model, {
-                "name": getValue(j, "name", ""),
-
-                "type": j.getValue("type", ""),
-                "address": j.getValue("location", ""),
-                "email": j.getValue("email", ""),
-                "created_time": j.getValue("created_at", ""),
-                "updated_time": j.getValue("updated_at", ""),
-                "url": j.getValue("url", ""),
-                "url_avatar": j.getValue("avatar_url", ""),
-                "url_html": j.getValue("html_url", ""),
+            var model = $.extend(IAPI.modelUser(), {
+                "name": Object.get(j, "name", ""),
+                "type": Object.get(j, "type", ""),
+                "address": Object.get(j, "location", ""),
+                "email": Object.get(j, "email", ""),
+                "created_time": Object.get(j, "created_at", ""),
+                "updated_time": Object.get(j, "updated_at", ""),
+                "url": Object.get(j, "url", ""),
+                "url_avatar": Object.get(j, "avatar_url", ""),
+                "url_html": Object.get(j, "html_url", ""),
             });
             return model;
         },
@@ -92,27 +94,43 @@
         toRepoContentModel: function(jsonResult) {
             var self = this;
             var j = jsonResult;
-            if (j.getValue("message", null) == null) {
+            if (Object.get(j, "message", null) != null) {
                 return null;
             }
-            var model = IAPI.modelRepoContent();
-            model = $.extend(model, {
-                "name": j.getValue("name", ""),
-                "path": j.getValue("path", ""),
-                "sha": j.getValue("sha", ""),
-                "size": j.getValue("size", 0),
-                "type": j.getValue("type", "dir"),
-                "content": j.getValue("content", ""),
-                "encoding": j.getValue("encoding", ""),
-                "url": j.getValue("url", ""),
-                "url_html": j.getValue("html_url", ""),
-                "url_git": j.getValue("git_url", ""),
-                "url_download": j.getValue("download_url", ""),
-                "link": j.getValue("_links", {}).getValue("self", ""),
-                "link_git": j.getValue("_links", {}).getValue("git", ""),
-                "link_html": j.getValue("_links", {}).getValue("html", ""),
+            if (typeof(j) == "object" && typeof(j.length) == "number") {
+                for (var i = 0; i < j.length; i++) {
+                    j[i] = self.toRepoContentModel(j[i]);
+                }
+                return j;
+            }
+            var model = $.extend(IAPI.modelRepoContent(), {
+                "name": Object.get(j, "name", ""),
+                "path": Object.get(j, "path", ""),
+                "sha": Object.get(j, "sha", ""),
+                "size": Object.get(j, "size", 0),
+                "type": Object.get(j, "type", "dir"),
+                "url": Object.get(j, "url", ""),
+                "url_html": Object.get(j, "html_url", ""),
+                "url_git": Object.get(j, "git_url", ""),
+                "url_download": Object.get(j, "download_url", ""),
+                "link": Object.get(Object.get(j, "_links", {}), "self", ""),
+                "link_git": Object.get(Object.get(j, "_links", {}), "git", ""),
+                "link_html": Object.get(Object.get(j, "_links", {}), "html", ""),
             });
             return model;
+        },
+        toRepoFileModel: function(jsonResult) {
+            var self = this;
+            var j = jsonResult;
+            if (Object.get(j, "message", null) != null) {
+                return null;
+            }
+            var content = self.toRepoContentModel(j);
+            var model = $.extend(IAPI.modelRepoFile(), {
+                "content": Object.get(j, "content", ""),
+                "encoding": Object.get(j, "encoding", ""),
+            });
+            return $.extend(model, content);
         },
     });
     this.APIGitee = IAPI.extend({

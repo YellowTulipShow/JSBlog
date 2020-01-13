@@ -48,6 +48,7 @@
     <script type="text/javascript" src="../package/jquery/jquery-3.4.1.js"></script>
     <script type="text/javascript" src="./base.js"></script>
     <script type="text/javascript" src="./inherit.js"></script>
+    <script type="text/javascript" src="./web_request.js"></script>
     <script type="text/javascript" src="./api.js"></script>
     <script type="text/javascript" src="./blog.js"></script>
 </head>
@@ -60,20 +61,16 @@
             owner: "YellowTulipShow",
             repo: "JSBlog",
         });
-        var ss = {}
-        // $.each(ss, function(key, value) {
-        //     console.log(key, value);
-        // })
-        for (var key in ss) {
-            console.log(key);
-        }
-        // console.log("blog:", blog);
-        // blog.RequestUser(function(modelUser) {
-        //     console.log("modelUser:", modelUser);
-        // });
-        // blog.RequestRepoContent(function(modelRepoContent) {
-        //     console.log("modelRepoContent:", modelRepoContent);
-        // });
+        console.log("blog:", blog);
+        blog.RequestUser(function(modelUser) {
+            console.log("modelUser:", modelUser);
+        });
+        blog.RequestRepoContent(function(modelRepoContent) {
+            console.log("modelRepoContent:", modelRepoContent);
+        });
+        blog.RequestRepoFile(function(modelRepoContent) {
+            console.log("modelRepoContent:", modelRepoContent);
+        }, "/.idea/log.md");
     </script>
 </body>
 </html>

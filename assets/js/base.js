@@ -90,15 +90,14 @@
 
 /* 对象 Object */
 (function() {
-    Object.prototype.getValue = function(name, default_value) {
+    Object.get = function(object, name, default_value) {
         if (arguments.length <= 0) {
-            console.log(arguments);
             return null;
         }
         name = name.toString();
-        var value = this[name];
+        var value = object[name];
         return value ? value : default_value;
-    }
+    };
 })();
 
 /* 扩展 Date 时间 */

@@ -8667,7 +8667,7 @@ function buildParams( prefix, obj, traditional, add ) {
 		}
 
 	} else {
-		console.log("add( prefix, obj );");
+
 		// Serialize scalar item.
 		add( prefix, obj );
 	}
@@ -8684,12 +8684,9 @@ jQuery.param = function( a, traditional ) {
 			var value = isFunction( valueOrFunction ) ?
 				valueOrFunction() :
 				valueOrFunction;
-            console.log("valueOrFunction:", valueOrFunction);
-            console.log("value:", value);
 
 			s[ s.length ] = encodeURIComponent( key ) + "=" +
 				encodeURIComponent( value == null ? "" : value );
-			console.log("s:", s);
 		};
 
 	if ( a == null ) {
@@ -8698,15 +8695,14 @@ jQuery.param = function( a, traditional ) {
 
 	// If an array was passed in, assume that it is an array of form elements.
 	if ( Array.isArray( a ) || ( a.jquery && !jQuery.isPlainObject( a ) ) ) {
-		console.log("new");
+
 		// Serialize the form elements
 		jQuery.each( a, function() {
-			console.log("this:", this);
 			add( this.name, this.value );
 		} );
 
 	} else {
-		console.log("old");
+
 		// If traditional, encode the "old" way (the way 1.3.2 or older
 		// did it), otherwise encode params recursively.
 		for ( prefix in a ) {

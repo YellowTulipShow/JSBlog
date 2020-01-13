@@ -47,44 +47,20 @@
 
     <script type="text/javascript" src="../package/jquery/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="./base.js"></script>
+    <!-- <script type="text/javascript" src="./web_request.js"></script> -->
 </head>
 <body class="body">
     <script type="text/javascript">
-        /* string 对象扩展 */
-
-        var str = "{name} 年龄: {age} 岁了!".format({ name: "张三", age: 23, });
-        console.log("string.format({name}):", str);
-
-        str = "{0} 年龄: {1} 岁了!".format("张三", 23);
-        console.log("string.format({0}):", str);
-
-        str = "  22 55 00 33  ";
-        console.log("str:", str);
-        console.log("string.trimStart(): '{0}'".format(str.trimStart()));
-        console.log("string.trimEnd(): '{0}'".format(str.trimEnd()));
-        console.log("string.trim(): '{0}'".format(str.trim()));
-
-        str = "14%@22 55 00 3314%@";
-        console.log("str:", str);
-        console.log("string.trimStart('14%@'): '{0}'".format(str.trimStart('14%@')));
-        console.log("string.trimEnd('14%@'): '{0}'".format(str.trimEnd('14%@')));
-        console.log("string.trim('14%@'): '{0}'".format(str.trim('14%@')));
-    </script>
-
-    <script type="text/javascript">
-        /* Object 对象扩展 */
-        var model = {
-            "name": "张三",
-            "age": 23,
-        };
-        console.log("model:", model);
-        console.log("model.get:", model.get);
-        console.log("model['name']:", model['name']);
-        console.log("model['sex']:", model['sex']);
-        console.log("object.get(model, 'name'):", Object.get(model, 'name'));
-        console.log("object.get(model, 'name', '刘备'):", Object.get(model, 'name', '刘备'));
-        console.log("object.get(model, 'sex'):", Object.get(model, 'sex'));
-        console.log("object.get(model, 'sex', '女'):", Object.get(model, 'sex', '女'));
+        function method(XMLHttpRequest, textStatus, errorThrown) {
+            var self = this;
+            console.log("XMLHttpRequest:", XMLHttpRequest);
+            console.log("textStatus:", textStatus);
+            console.log("errorThrown:", errorThrown);
+        }
+        method();
+        method(1);
+        method(1, "2");
+        method(1, "2", 3.0);
     </script>
 </body>
 </html>
