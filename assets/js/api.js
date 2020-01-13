@@ -42,7 +42,7 @@
     IAPI.modelRepoFile = function() {
         return $.extend(IAPI.modelRepoContent(), {
             "content": "",
-            "encoding": "",
+            "encoding": "", // base64,
         });
     }
     this.IAPI = IAPI;

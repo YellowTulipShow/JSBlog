@@ -22,12 +22,12 @@
         console.log("--------------------------------------------------------------------------")
 
         var b = new Base64();
-        var utf8 = b.decode(sources);
+        utf8 = b.decode(sources);
         console.log("utf8: ", utf8);
 
         console.log("--------------------------------------------------------------------------")
 
-        var base64 = b.encode(utf8);
+        base64 = b.encode(utf8);
         console.log("base64: ", base64);
 
         console.log("is base64 equal: ", base64 == sources.replace(/\n/g,""));

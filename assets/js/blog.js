@@ -97,12 +97,14 @@
             }, function(result_list) {
                 if (result_list == null || result_list.length <= 0) {
                     self.RequestGet(url, function(json) {
-                        self.db.Insert({
-                            path: url,
-                            value: json,
-                        }, function(model) {
-                            console.log("成功保存数据:", model);
-                        });
+                        if (json != null) {
+                            self.db.Insert({
+                                path: url,
+                                value: json,
+                            }, function(model) {
+                                console.log("成功保存数据:", model);
+                            });
+                        }
                         callback(json);
                     });
                     return;
