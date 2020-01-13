@@ -10,7 +10,7 @@
 
     var dbStore = function(argumentConfig) {
         this.config = this.__DefaultConfig__(argumentConfig);
-        this.db = {};
+        this.db = null;
         this.__init__();
     }
     dbStore.prototype = {
@@ -160,7 +160,8 @@
             // 最终要展示的HTML数据
             var htmlProjectList = '';
             // 打开对象存储，获得游标列表
-            var objectStore = db.transaction(dbName).objectStore(dbName);
+            var DBTransaction = db.transaction(dbName);
+            var objectStore = DBTransaction.objectStore(dbName);
             objectStore.openCursor().onsuccess = function(event) {
                 var cursor = event.target.result;
                 // 如果游标没有遍历完，继续下面的逻辑
