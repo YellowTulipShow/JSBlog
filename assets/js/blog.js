@@ -39,13 +39,19 @@
         },
         __init__: function() {
             var self = this;
-            self.__init_database__();
+            try {
+                self.__init_database__();
+            } catch(ex) {
+                self.db = null;
+                console.log("数据库实例化出现错误:", ex);
+            }
         },
         __init_database__: function() {
             var self = this;
             if (!self.config.isSave) {
                 return;
             }
+
             self.db = new dbStore({
                 "name": self.DBName(),
                 "fields": [
