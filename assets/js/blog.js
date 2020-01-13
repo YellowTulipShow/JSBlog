@@ -84,29 +84,50 @@
                 },
             });
         },
+        RequestGet_DBAutoSave: function(url, callback) {
+            var self = this;
+            self.db.Query(function(model) {
+                return model.path == url;
+            }, function(result_list) {
+                if (result_list == null || result_list.length <= 0) {
+                    self.RequestGet(url, function(json) {
+                        self.db.Insert({
+                            path: url,
+                            value: json,
+                        }, function(model) {
+                            console.log("成功保存数据:", model);
+                        });
+                        callback(json);
+                    });
+                    return;
+                }
+                callback(self.DBRequeseToURLModel(result_list));
+            });
+        },
+        DBRequeseToURLModel: function(dbResultList) {
+            if (dbResultList == null || dbResultList.length <= 0) {
+                return null;
+            }
+            if (dbResultList.length == 1) {
+                return Object.get(dbResultList[0], "value", {});
+            }
+            var list = [];
+            for (var i = 0; i < dbResultList.length; i++) {
+                var item = dbResultList[i];
+                var model = Object.get(item, "value", {});
+                list.push(model);
+            }
+            return list;
+        },
         RequestUser: function(callback) {
             var self = this;
             var IAPI = self.IAPI;
             var url = IAPI.toUserURL();
 
             if (self.db != null) {
-                self.db.Query(function(model) {
-                    return model.path == url;
-                }, function(result_list) {
-                    if (result_list == null || result_list.length <= 0) {
-                        self.RequestGet(url, function(json) {
-                            var model = IAPI.toUserModel(json);
-                            self.db.Insert({
-                                path: url,
-                                value: model,
-                            }, function(model) {
-                                console.log("成功保存数据:", model);
-                            });
-                            callback(model);
-                        });
-                        return;
-                    }
-                    callback(self.DBRequeseToURLModel(result_list));
+                self.RequestGet_DBAutoSave(url, function(json) {
+                    var model = IAPI.toUserModel(json);
+                    callback(model);
                 });
                 return;
             }
@@ -123,23 +144,9 @@
             var url = IAPI.toRepoContentURL(path);
 
             if (self.db != null) {
-                self.db.Query(function(model) {
-                    return model.path == url;
-                }, function(result_list) {
-                    if (result_list == null || result_list.length <= 0) {
-                        self.RequestGet(url, function(json) {
-                            var model = IAPI.toRepoContentModel(json);
-                            self.db.Insert({
-                                path: url,
-                                value: model,
-                            }, function(model) {
-                                console.log("成功保存数据:", model);
-                            });
-                            callback(model);
-                        });
-                        return;
-                    }
-                    callback(self.DBRequeseToURLModel(result_list));
+                self.RequestGet_DBAutoSave(url, function(json) {
+                    var model = IAPI.toRepoContentModel(json);
+                    callback(model);
                 });
                 return;
             }
@@ -156,23 +163,9 @@
             var url = IAPI.toRepoContentURL(path);
 
             if (self.db != null) {
-                self.db.Query(function(model) {
-                    return model.path == url;
-                }, function(result_list) {
-                    if (result_list == null || result_list.length <= 0) {
-                        self.RequestGet(url, function(json) {
-                            var model = IAPI.toRepoFileModel(json);
-                            self.db.Insert({
-                                path: url,
-                                value: model,
-                            }, function(model) {
-                                console.log("成功保存数据:", model);
-                            });
-                            callback(model);
-                        });
-                        return;
-                    }
-                    callback(self.DBRequeseToURLModel(result_list));
+                self.RequestGet_DBAutoSave(url, function(json) {
+                    var model = IAPI.toRepoFileModel(json);
+                    callback(model);
                 });
                 return;
             }
@@ -183,21 +176,6 @@
             });
         },
 
-        DBRequeseToURLModel: function(dbResultList) {
-            if (dbResultList == null || dbResultList.length <= 0) {
-                return null;
-            }
-            if (dbResultList.length == 1) {
-                return Object.get(dbResultList[0], "value", {});
-            }
-            var list = [];
-            for (var i = 0; i < dbResultList.length; i++) {
-                var item = dbResultList[i];
-                var model = Object.get(item, "value", {});
-                list.push(model);
-            }
-            return list;
-        },
     };
     Blog.prototype.constructor = Blog;
     this.Blog = Blog;
