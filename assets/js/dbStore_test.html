@@ -89,6 +89,15 @@
 </tr>
 </script>
 <script type="text/javascript">
+    (function() {
+        if (dbStore.IsSupportIndexedDB()) {
+            console.log("支持 indexedDB API 可以使用!");
+        } else {
+            console.log("不支持 indexedDB API!");
+        }
+    })();
+</script>
+<script type="text/javascript">
 (function () {
     // 元素们
     var eleForm = document.querySelector('#form');
@@ -151,6 +160,7 @@
             // 最终要展示的HTML数据
             var htmlProjectList = "";
             db.Query(null, function(result_list) {
+                console.log(result_list);
                 for (var i = 0; i < result_list.length; i++) {
                     var item = result_list[i]
                     htmlProjectList = htmlProjectList + strTplList.temp(item);
@@ -165,7 +175,6 @@
         }
     };
 
-    /*
     // 表单提交新增数据
     eleForm.addEventListener('submit', function (event) {
         event.preventDefault();
@@ -214,21 +223,7 @@
             event.preventDefault();
         }
     });
-    */
 })();
 </script>
-
-    <script type="text/javascript">
-        (function() {
-            if (!dbStore.IsSupportIndexedDB()) {
-                console.log("不支持 indexedDB API!");
-                return;
-            }
-            var db = new window.dbStore({
-                name: 'YellowTulipShow/-ArticleNotes',
-            });
-            console.log(db);
-        })();
-    </script>
 </body>
 </html>
