@@ -175,7 +175,45 @@
                 callback(model);
             });
         },
+        RefreshUser: function(callback) {
+            var self = this;
+            var IAPI = self.IAPI;
+            var url = IAPI.toUserURL();
 
+            if (self.db != null) {
+                self.Delete(url, function(url) {
+                    self.RequestUser(callback);
+                });
+                return;
+            }
+            self.RequestUser(callback);
+        },
+        RefreshRepoContent: function(callback, path) {
+            var self = this;
+            var IAPI = self.IAPI;
+            var url = IAPI.toRepoContentURL(path);
+
+            if (self.db != null) {
+                self.Delete(url, function(url) {
+                    self.RequestRepoContent(callback, path);
+                });
+                return;
+            }
+            self.RequestRepoContent(callback, path);
+        },
+        RefreshRepoFile: function(callback, path) {
+            var self = this;
+            var IAPI = self.IAPI;
+            var url = IAPI.toRepoContentURL(path);
+
+            if (self.db != null) {
+                self.Delete(url, function(url) {
+                    self.RequestRepoFile(callback, path);
+                });
+                return;
+            }
+            self.RequestRepoFile(callback, path);
+        },
     };
     Blog.prototype.constructor = Blog;
     this.Blog = Blog;
