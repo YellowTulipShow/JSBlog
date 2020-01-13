@@ -14,9 +14,17 @@
         this.__init__();
     }
     dbStore.prototype = {
+        _fieldTempate_: function() {
+            return {
+                name: "",
+                isSign: false,
+                isUnique: false,
+            };
+        },
         __DefaultConfig__: function(argumentConfig) {
             var config = {
                 'name': 'project',
+                "fields": [],
                 dbOpenError: function() {},
                 dbOpenSuccess: function() {},
             };
@@ -47,20 +55,39 @@
                 db.onerror = function(event) {
                     self.config.dbOpenError();
                 };
+
+                var fields = self.config.fields;
+
+                var keyName = null;
+                for (var i = 0; i < fields.length; i++) {
+                    var item = fields[i];
+                    if (!keyName) {
+                        if (Object.get(item, "isSign", false) === true) {
+                            keyName = Object.get(item, "name", "");
+                        }
+                    }
+                }
+
+                var dIDKey = "id";
                 // 创建一个数据库存储对象
                 var objectStore = db.createObjectStore(dbName, {
-                    keyPath: 'id',
-                    autoIncrement: false,
+                    keyPath: keyName || dIDKey,
+                    autoIncrement: (keyName || dIDKey) == dIDKey,
                 });
+
                 // 定义存储对象的数据项
-                objectStore.createIndex('id', 'id', {
-                    unique: true
-                });
-                objectStore.createIndex('name', 'name', { unique: false, });
-                objectStore.createIndex('begin', 'begin');
-                objectStore.createIndex('end', 'end');
-                objectStore.createIndex('person', 'person');
-                objectStore.createIndex('remark', 'remark');
+                if (!keyName) {
+                    objectStore.createIndex(dIDKey, dIDKey, { unique: true });
+                }
+                for (var i = 0; i < fields.length; i++) {
+                    var item = fields[i];
+                    var name = Object.get(item, "name", "");
+                    if (keyName == name) {
+                        continue;
+                    }
+                    var unique = Object.get(item, "isUnique", false);
+                    objectStore.createIndex(name, name, { unique: unique, });
+                }
             };
         },
         Insert: function(model) {
