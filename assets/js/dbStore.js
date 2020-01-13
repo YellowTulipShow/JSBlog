@@ -23,7 +23,7 @@
         },
         __DefaultConfig__: function(argumentConfig) {
             var config = {
-                'name': 'project',
+                "name": "project",
                 "fields": [],
                 dbOpenError: function() {},
                 dbOpenSuccess: function() {},
@@ -55,6 +55,7 @@
                 db.onerror = function(event) {
                     self.config.dbOpenError();
                 };
+                self.db = db;
 
                 var fields = self.config.fields;
 
@@ -90,21 +91,91 @@
                 }
             };
         },
-        Insert: function(model) {
+        Insert: function(model, callback) {
+            callback = callback || function(model) {};
             var self = this;
-            return true;
+            var db = self.db;
+            var dbName = self.config.name;
+
+            var transaction = db.transaction([dbName], "readwrite");
+            // 打开已经存储的数据对象
+            var objectStore = transaction.objectStore(dbName);
+            // 添加到数据对象中
+            var objectStoreRequest = objectStore.add(model);
+            objectStoreRequest.onsuccess = function(event) {
+                callback(model);
+            };
         },
-        Edit: function(model) {
+        Edit: function(keySign, model) {
             var self = this;
-            return true;
+            var db = self.db;
+            var dbName = self.config.name;
+
+            // 编辑数据
+            var transaction = db.transaction([dbName], "readwrite");
+            // 打开已经存储的数据对象
+            var objectStore = transaction.objectStore(dbName);
+            // 获取存储的对应键的存储对象
+            var objectStoreRequest = objectStore.getValue(keySign);
+            // 获取成功后替换当前数据
+            objectStoreRequest.onsuccess = function(event) {
+                // 当前数据
+                var myRecord = objectStoreRequest.result;
+                // 遍历替换
+                for (var key in model) {
+                    if (typeof myRecord[key] != 'undefined') {
+                        myRecord[key] = model[key];
+                    }
+                }
+                // 更新数据库存储数据
+                objectStore.put(myRecord);
+            };
         },
-        Delete: function(selectMethod) {
+        Delete: function(keySign, callback) {
+            callback = callback || function(keySign) {};
             var self = this;
-            return true;
+            var db = self.db;
+            var dbName = self.config.name;
+
+            // 打开已经存储的数据对象
+            var objectStore = db.transaction([dbName], "readwrite").objectStore(dbName);
+            // 直接删除
+            var objectStoreRequest = objectStore.delete(keySign);
+            // 删除成功后
+            objectStoreRequest.onsuccess = function() {
+                callback(keySign);
+            };
         },
-        Query: function(selectMethod) {
+        Query: function(selectMethod, callback) {
+            selectMethod = selectMethod || function(value) {
+                return true;
+            };
+            callback = callback || function(result_list) {};
             var self = this;
-            return [];
+            var db = self.db;
+            var dbName = self.config.name;
+
+            var result = [];
+
+            // 最终要展示的HTML数据
+            var htmlProjectList = '';
+            // 打开对象存储，获得游标列表
+            var objectStore = db.transaction(dbName).objectStore(dbName);
+            objectStore.openCursor().onsuccess = function(event) {
+                var cursor = event.target.result;
+                // 如果游标没有遍历完，继续下面的逻辑
+                if (cursor) {
+                    var value = cursor.value;
+                    if (selectMethod(value)) {
+                        result.push(value)
+                    }
+                    // 继续下一个游标项
+                    cursor.continue();
+                // 如果全部遍历完毕
+                } else {
+                    callback(result);
+                }
+            }
         },
     };
     dbStore.prototype.constructor = dbStore;
