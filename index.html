@@ -45,6 +45,9 @@
     <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <!-- <link rel="stylesheet" type="text/css" href="./assets/css/base.css"> -->
+    <link rel="stylesheet" type="text/css" href="./assets/css/page.css">
+
     <link rel="stylesheet" type="text/css" href="./assets/package/marked/style.css">
     <script type="text/javascript" src="./assets/package/marked/marked.min.js"></script>
 
@@ -60,6 +63,18 @@
     <script type="text/javascript" src="./assets/js/blog.js"></script>
 </head>
 <body class="body">
+    <div id="IDMenu" class="Menu">
+        <div class="Button">
+            <button v-if="!isShow" v-on:click="set_show">打开菜单</button>
+            <button v-if="isShow" v-on:click="set_show">关闭菜单</button>
+        </div>
+        <ol>
+            <li class="li" v-for="m in models">
+                {{m.type}} | {{m.name}} | {{m.path}}
+                <button v-if="/.+\.md$/g.test(m.name) && m.type == 'file'" v-on:click="acticle_show(m.path)">展示文本</button>
+            </li>
+        </ol>
+    </div>
     <div id="IDMarkdownBody" class="container-lg px-3 my-5 markdown-body">
     </div>
 
@@ -74,15 +89,40 @@
         platform: PageInfo.QueryString("platform") || "GitHub",
         owner: PageInfo.QueryString("owner") || "YellowTulipShow",
         repo: PageInfo.QueryString("repo") || "JSBlog",
-        path: PageInfo.QueryString("path") || "",
+        path: PageInfo.QueryString("path") || ".idea/log.md",
     };
 </script>
 <script type="text/javascript">
     (function() {
+        var menu = new Vue({
+            el: "#IDMenu",
+            data: {
+                isShow: $("#IDMenu").hasClass("Show"),
+                models: [],
+            },
+            methods: {
+                set_show: function() {
+                    var cls = "Show";
+                    var ele = $("#IDMenu");
+                    if (ele.hasClass(cls)) {
+                        ele.removeClass(cls);
+                        this.isShow = false;
+                    } else {
+                        ele.addClass(cls);
+                        this.isShow = true;
+                    }
+                },
+                acticle_show: function(path) {
+                    show_acticle_content(path);
+                    this.set_show();
+                },
+            }
+        });
         var blog = null;
         $(document).ready(function() {
             _init_();
         });
+
         function _init_() {
             blog = new Blog({
                 platform: page_args.platform,
@@ -93,12 +133,18 @@
                     console.log("启用数据库失败!");
                 },
                 dbOpenSuccess: function() {
-                    _success_callback_();
+                    _success_callback_(page_args.path);
                 },
             });
         }
+
         function _success_callback_() {
-            read_acticle(page_args.path, function(model) {
+            show_acticle_content(page_args.path);
+            read_all_paths("/");
+        }
+
+        function show_acticle_content(path) {
+            read_acticle(path, function(model) {
                 var content = Object.get(model, "content", "");
                 var encoding = Object.get(model, "encoding", "text");
 
@@ -106,7 +152,6 @@
                 var md = marked(value);
                 $("#IDMarkdownBody").html(md);
             });
-            read_all_paths("/");
         }
 
         function read_acticle(path, callback) {
@@ -135,7 +180,7 @@
 
                 for (var i = 0; i < models.length; i++) {
                     var model = models[i];
-                    console.log("{name}: {type}, {path}".format(model));
+                    // console.log("{name}: {type}, {path}".format(model));
                     var type = Object.get(model, "type", "");
                     var path = Object.get(model, "path", "");
                     if (type == "dir") {
@@ -143,6 +188,7 @@
                     } else if (type == "file") {
                         read_acticle(path, null);
                     }
+                    menu.models.push(model);
                 }
             }, path);
         }
