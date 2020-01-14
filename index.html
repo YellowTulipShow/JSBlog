@@ -49,6 +49,8 @@
     <script type="text/javascript" src="./assets/package/marked/marked.min.js"></script>
 
     <script type="text/javascript" src="./assets/package/jquery/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="./assets/package/vue/vue.v2.6.10.min.js"></script>
+
     <script type="text/javascript" src="./assets/js/base.js"></script>
     <script type="text/javascript" src="./assets/js/base64.js"></script>
     <script type="text/javascript" src="./assets/js/inherit.js"></script>
@@ -61,19 +63,22 @@
     <div id="IDMarkdownBody" class="container-lg px-3 my-5 markdown-body">
     </div>
 
-    <script type="text/javascript">
-        /*
-            testURL:
-            ?platform=GitHub&owner=YellowTulipShow&repo=JSBlog&path=.idea/log.md
-        */
-        var page_args = {
-            platform: PageInfo.QueryString("platform") || "GitHub",
-            owner: PageInfo.QueryString("owner") || "YellowTulipShow",
-            repo: PageInfo.QueryString("repo") || "JSBlog",
-            path: PageInfo.QueryString("path") || "",
-        };
-    </script>
-    <script type="text/javascript">
+<!-- ========================================脚本分割线======================================== -->
+
+<script type="text/javascript">
+    /*
+        testURL:
+        ?platform=GitHub&owner=YellowTulipShow&repo=JSBlog&path=.idea/log.md
+    */
+    var page_args = {
+        platform: PageInfo.QueryString("platform") || "GitHub",
+        owner: PageInfo.QueryString("owner") || "YellowTulipShow",
+        repo: PageInfo.QueryString("repo") || "JSBlog",
+        path: PageInfo.QueryString("path") || "",
+    };
+</script>
+<script type="text/javascript">
+    (function() {
         var blog = null;
         $(document).ready(function() {
             _init_();
@@ -141,6 +146,10 @@
                 }
             }, path);
         }
-    </script>
+    })();
+</script>
+
+<!-- ========================================脚本分割线======================================== -->
+
 </body>
 </html>
