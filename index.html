@@ -74,11 +74,12 @@
         };
     </script>
     <script type="text/javascript">
+        var blog = null;
         $(document).ready(function() {
-            var box = $("#ID_Box_Directory");
-            var himg = $("#ID_HTML_IMG");
-
-            var blog = new Blog({
+            _init_();
+        });
+        function _init_() {
+            blog = new Blog({
                 platform: page_args.platform,
                 owner: page_args.owner,
                 repo: page_args.repo,
@@ -87,44 +88,59 @@
                     console.log("启用数据库失败!");
                 },
                 dbOpenSuccess: function() {
-                    read_acticle(page_args.path);
+                    _success_callback_();
                 },
             });
+        }
+        function _success_callback_() {
+            read_acticle(page_args.path, function(model) {
+                var content = Object.get(model, "content", "");
+                var encoding = Object.get(model, "encoding", "text");
 
-            function read_acticle(path) {
-                if (path == null || path == "") {
+                var value = blog.toNormalText(content, encoding);
+                var md = marked(value);
+                $("#IDMarkdownBody").html(md);
+            });
+            read_all_paths("/");
+        }
+
+        function read_acticle(path, callback) {
+            callback = callback || function(model) {}
+            if (path == null || path == "") {
+                return;
+            }
+            blog.RequestRepoContent(function(model) {
+                if (model == null) {
+                    console.log("文件路径读取为空:", path);
                     return;
                 }
-                blog.RequestRepoContent(function(model) {
-                    if (model == null) {
-                        console.log("文件路径读取为空:", path);
-                        return;
-                    }
+                callback(model)
+            }, path);
+        }
 
-                    var content = Object.get(model, "content", "");
-                    var encoding = Object.get(model, "encoding", "text");
-
-                    var value = toNormalText(content, encoding);
-                    var md = marked(value);
-                    $("#IDMarkdownBody").html(md);
-                }, path);
+        function read_all_paths(path) {
+            if (path == null || path == "") {
+                return;
             }
-
-            function toNormalText(content, ecodeing) {
-                switch(ecodeing.toLowerCase()) {
-                    case "text":
-                        return content.toString();
-                    case "base64":
-                        var b64 = new Base64();
-                        return b64.decode(content);
-                    default:
-                        return toNormalText(content, "text")
+            blog.RequestRepoContent(function(models) {
+                if (models == null) {
+                    console.log("目录路径读取为空:", path);
+                    return;
                 }
-            }
 
-            function read_all_paths() {
-            }
-        });
+                for (var i = 0; i < models.length; i++) {
+                    var model = models[i];
+                    console.log("{name}: {type}, {path}".format(model));
+                    var type = Object.get(model, "type", "");
+                    var path = Object.get(model, "path", "");
+                    if (type == "dir") {
+                        read_all_paths(path)
+                    } else if (type == "file") {
+                        read_acticle(path, null);
+                    }
+                }
+            }, path);
+        }
     </script>
 </body>
 </html>

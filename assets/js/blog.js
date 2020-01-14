@@ -190,6 +190,20 @@
             }
             self.RequestRepoContent(callback, path);
         },
+        toNormalText: function(content, ecodeing) {
+            var self = this;
+            content = content || "";
+            var default_ecodeing = "text";
+            ecodeing = ecodeing || default_ecodeing;
+            switch(ecodeing.toLowerCase()) {
+                case default_ecodeing:
+                    return content.toString();
+                case "base64":
+                    return new Base64().decode(content);
+                default:
+                    return self.toNormalText(content, default_ecodeing)
+            }
+        },
     };
     Blog.prototype.constructor = Blog;
     this.Blog = Blog;
