@@ -8,7 +8,6 @@
         toUserModel: function(jsonResult) { },
         toRepoContentURL: function(path) { },
         toRepoContentModel: function(jsonResult) { },
-        toRepoFileModel: function(jsonResult) { },
     });
     IAPI.modelUser = function() {
         return {
@@ -37,13 +36,9 @@
             "link": "",
             "link_git": "",
             "link_html": "",
-        };
-    }
-    IAPI.modelRepoFile = function() {
-        return $.extend(IAPI.modelRepoContent(), {
             "content": "",
             "encoding": "", // base64,
-        });
+        };
     }
     this.IAPI = IAPI;
 
@@ -116,21 +111,10 @@
                 "link": Object.get(Object.get(j, "_links", {}), "self", ""),
                 "link_git": Object.get(Object.get(j, "_links", {}), "git", ""),
                 "link_html": Object.get(Object.get(j, "_links", {}), "html", ""),
-            });
-            return model;
-        },
-        toRepoFileModel: function(jsonResult) {
-            var self = this;
-            var j = jsonResult;
-            if (Object.get(j, "message", null) != null) {
-                return null;
-            }
-            var content = self.toRepoContentModel(j);
-            var model = $.extend(IAPI.modelRepoFile(), {
                 "content": Object.get(j, "content", ""),
                 "encoding": Object.get(j, "encoding", ""),
             });
-            return $.extend(model, content);
+            return model;
         },
     });
     this.APIGitee = IAPI.extend({

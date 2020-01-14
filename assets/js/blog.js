@@ -164,25 +164,6 @@
                 callback(model);
             });
         },
-        RequestRepoFile: function(callback, path) {
-            path = path || "/";
-            var self = this;
-            var IAPI = self.IAPI;
-            var url = IAPI.toRepoContentURL(path);
-
-            if (self.db != null) {
-                self.RequestGet_DBAutoSave(url, function(json) {
-                    var model = IAPI.toRepoFileModel(json);
-                    callback(model);
-                });
-                return;
-            }
-
-            self.RequestGet(url, function(json) {
-                var model = IAPI.toRepoFileModel(json);
-                callback(model);
-            });
-        },
         RefreshUser: function(callback) {
             var self = this;
             var IAPI = self.IAPI;
@@ -208,19 +189,6 @@
                 return;
             }
             self.RequestRepoContent(callback, path);
-        },
-        RefreshRepoFile: function(callback, path) {
-            var self = this;
-            var IAPI = self.IAPI;
-            var url = IAPI.toRepoContentURL(path);
-
-            if (self.db != null) {
-                self.Delete(url, function(url) {
-                    self.RequestRepoFile(callback, path);
-                });
-                return;
-            }
-            self.RequestRepoFile(callback, path);
         },
     };
     Blog.prototype.constructor = Blog;

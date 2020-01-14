@@ -95,11 +95,12 @@
                 if (path == null || path == "") {
                     return;
                 }
-                blog.RequestRepoFile(function(model) {
+                blog.RequestRepoContent(function(model) {
                     if (model == null) {
                         console.log("文件路径读取为空:", path);
                         return;
                     }
+
                     var content = Object.get(model, "content", "");
                     var encoding = Object.get(model, "encoding", "text");
 
