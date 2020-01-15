@@ -63,10 +63,9 @@
     <script type="text/javascript" src="./assets/js/blog.js"></script>
 </head>
 <body class="body">
-    <div id="IDMenu" class="Menu">
+    <div id="IDMenu" class="Menu" v-bind:class="{ Show: isShow }">
         <div class="Button">
-            <button v-if="!isShow" v-on:click="set_show">打开菜单</button>
-            <button v-if="isShow" v-on:click="set_show">关闭菜单</button>
+            <button v-on:click="isShow = !isShow">{{isShow ? "关闭" : "打开"}}菜单</button>
         </div>
         <ol>
             <li class="li" v-for="m in models">
@@ -97,27 +96,17 @@
         var menu = new Vue({
             el: "#IDMenu",
             data: {
-                isShow: $("#IDMenu").hasClass("Show"),
+                isShow: false,
                 models: [],
             },
             methods: {
-                set_show: function() {
-                    var cls = "Show";
-                    var ele = $("#IDMenu");
-                    if (ele.hasClass(cls)) {
-                        ele.removeClass(cls);
-                        this.isShow = false;
-                    } else {
-                        ele.addClass(cls);
-                        this.isShow = true;
-                    }
-                },
                 acticle_show: function(path) {
                     show_acticle_content(path);
-                    this.set_show();
+                    this.isShow = false;
                 },
             }
         });
+
         var blog = null;
         $(document).ready(function() {
             _init_();
