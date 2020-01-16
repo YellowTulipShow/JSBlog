@@ -204,6 +204,26 @@
                     return self.toNormalText(content, default_ecodeing)
             }
         },
+        TraverseRepoPaths: function(callback, path) {
+            callback = callback || function(path, model) {};
+            path = path || "";
+            var self = this;
+            self.RequestRepoContent(function(models) {
+                if (models == null) {
+                    console.log("目录路径读取为空:", path);
+                    return;
+                }
+                for (var i = 0; i < models.length; i++) {
+                    var model = models[i];
+                    var type = Object.get(model, "type", "");
+                    var mpath = Object.get(model, "path", "");
+                    if (type == "dir") {
+                        self.TraverseRepoPaths(callback, mpath);
+                    }
+                    callback(mpath, model);
+                }
+            }, path);
+        },
     };
     Blog.prototype.constructor = Blog;
     this.Blog = Blog;

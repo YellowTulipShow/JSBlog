@@ -137,7 +137,9 @@
 
         function _success_callback_() {
             show_acticle_content(page_args.path);
-            read_all_paths("/");
+            blog.TraverseRepoPaths(function(path, model) {
+                menu.models.push(model);
+            });
         }
 
         function show_acticle_content(path) {
@@ -162,29 +164,6 @@
                     return;
                 }
                 callback(model)
-            }, path);
-        }
-
-        function read_all_paths(path) {
-            if (path == null || path == "") {
-                return;
-            }
-            blog.RequestRepoContent(function(models) {
-                if (models == null) {
-                    console.log("目录路径读取为空:", path);
-                    return;
-                }
-
-                for (var i = 0; i < models.length; i++) {
-                    var model = models[i];
-                    // console.log("{name}: {type}, {path}".format(model));
-                    var type = Object.get(model, "type", "");
-                    var path = Object.get(model, "path", "");
-                    if (type == "dir") {
-                        read_all_paths(path)
-                    }
-                    menu.models.push(model);
-                }
             }, path);
         }
     })();
