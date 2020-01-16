@@ -51,4 +51,19 @@
     .Menu ol,
     .Menu ul {
         list-style: none;
+        white-space: nowrap;
+    }
+
+.PhotoAlbum {
+    display: block;
+    overflow: hidden;
+    position: relative;
+    padding: .5em 0 0 .5em;
+}
+    .PhotoAlbum img {
+        display: block;
+        width: auto;
+        height: 6em;
+        float: left;
+        margin: 0 .5em .5em 0;
     }

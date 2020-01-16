@@ -79,7 +79,7 @@
     <div id="IDMarkdownBody" class="container-lg px-3 my-5 markdown-body">
     </div>
     <div id="IDPhotoAlbum" class="PhotoAlbum">
-        <img class="img" src="" v-for="m in models" />
+        <img class="img" v-bind:src="show_content(m.content)" v-for="m in models" />
     </div>
 
 <!-- ========================================脚本分割线======================================== -->
@@ -115,6 +115,20 @@
             }
         });
 
+        var album = new Vue({
+            el: "#IDPhotoAlbum",
+            data: {
+                models: [],
+            },
+            methods: {
+                show_content: function(content) {
+                    console.log(content);
+                    content = content.replace(/\n/g,"");
+                    return "data:image/png;base64," + content;
+                }
+            }
+        });
+
         var blog = null;
         $(document).ready(function() {
             _init_();
@@ -139,6 +153,11 @@
             show_acticle_content(page_args.path);
             blog.TraverseRepoPaths(function(path, model) {
                 menu.models.push(model);
+
+                if (/.+\.(jpg|png|gif)$/gi.test(model.name) && model.type == 'file') {
+
+                    album.models.push(model);
+                }
             });
         }
 
