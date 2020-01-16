@@ -51,9 +51,11 @@
     <link rel="stylesheet" type="text/css" href="./assets/package/marked/style.css">
     <script type="text/javascript" src="./assets/package/marked/marked.min.js"></script>
 
-    <script type="text/javascript" src="./assets/package/jquery/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="./assets/package/jquery/jquery-3.4.1.js"></script>
+    <!-- <script type="text/javascript" src="./assets/package/jquery/jquery-3.4.1.min.js"></script> -->
     <script type="text/javascript" src="./assets/package/vue/vue.v2.6.10.min.js"></script>
 
+    <script type="text/javascript" src="./assets/js/url_parameter.js"></script>
     <script type="text/javascript" src="./assets/js/base.js"></script>
     <script type="text/javascript" src="./assets/js/base64.js"></script>
     <script type="text/javascript" src="./assets/js/inherit.js"></script>
@@ -87,12 +89,15 @@
         testURL:
         ?platform=GitHub&owner=YellowTulipShow&repo=JSBlog&path=.idea/log.md
     */
+    var urlpar = new UrlParameter();
     var page_args = {
-        platform: PageInfo.QueryString("platform") || "GitHub",
-        owner: PageInfo.QueryString("owner") || "YellowTulipShow",
-        repo: PageInfo.QueryString("repo") || "JSBlog",
-        path: PageInfo.QueryString("path") || ".idea/log.md",
+        platform: urlpar.get("platform") || "GitHub",
+        owner: urlpar.get("owner") || "YellowTulipShow",
+        repo: urlpar.get("repo") || "JSBlog",
+        path: urlpar.get("path") || ".idea/log.md",
     };
+
+    // window.open("file:///D:/Work/YTS.ZRQ/JSBlog/acticle.html?" + urlpar.serialize(page_args));
 </script>
 <script type="text/javascript">
     (function() {
@@ -177,8 +182,6 @@
                     var path = Object.get(model, "path", "");
                     if (type == "dir") {
                         read_all_paths(path)
-                    } else if (type == "file") {
-                        read_acticle(path, null);
                     }
                     menu.models.push(model);
                 }
