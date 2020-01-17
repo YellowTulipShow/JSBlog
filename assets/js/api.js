@@ -8,6 +8,7 @@
         toUserModel: function(jsonResult) { },
         toRepoContentURL: function(path) { },
         toRepoContentModel: function(jsonResult) { },
+        isErrorResponse: function(jsonResult) {},
     });
     IAPI.modelUser = function() {
         return {
@@ -115,6 +116,11 @@
                 "encoding": Object.get(j, "encoding", ""),
             });
             return model;
+        },
+        isErrorResponse: function(jsonResult) {
+            jsonResult = jsonResult || {};
+            var message = Object.get(jsonResult, "message", null);
+            return message != null;
         },
     });
     this.APIGitee = IAPI.extend({

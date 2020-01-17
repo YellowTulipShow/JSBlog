@@ -80,6 +80,10 @@
                 data: {},
                 dataType: "json",
                 success: function(json) {
+                    if (IAPI.isErrorResponse(json)) {
+                        callback(null);
+                        return;
+                    }
                     callback(json);
                 },
                 error: function(XMLHttpRequest_obj, textStatus_obj, errorThrown_obj) {
@@ -213,7 +217,6 @@
                     console.log("目录路径读取为空:", path);
                     return;
                 }
-                // console.log("models:", models);
                 for (var i = 0; i < models.length; i++) {
                     var model = models[i];
                     var type = Object.get(model, "type", "");
@@ -221,12 +224,13 @@
                     if (type == "dir") {
                         self.TraverseRepoPaths(callback, mpath);
                         callback(mpath, model);
-                    }
-                    if (type == "file") {
+                    } else if (type == "file") {
                         self.RequestRepoContent(function(file_model) {
                             var file_path = Object.get(file_model || {}, "path", "");
                             callback(file_path, file_model);
                         }, mpath);
+                    } else {
+                        callback(mpath, model);
                     }
                 }
             }, path);

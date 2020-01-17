@@ -73,14 +73,12 @@
                 blog.RequestRepoContent(function(modelRepoContent) {
                     console.log("modelRepoContent:", modelRepoContent);
                 });
-                blog.RequestRepoFile(function(modelRepoContent) {
+                blog.RequestRepoContent(function(modelRepoContent) {
                     console.log("modelRepoContent:", modelRepoContent);
                 }, "/.idea/log.md");
             },
         });
         console.log("blog:", blog);
-
-
     </script>
 </body>
 </html>

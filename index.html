@@ -156,7 +156,6 @@
                     return;
                 }
                 var m = $.extend({}, model);
-                console.log("path:{0} | {1} | {2}".format(path, m.path, path == m.path));
                 menu.models.push(m);
                 if (/.+\.(jpg|png|gif)$/gi.test(m.name) && m.type == 'file') {
                     album.models.push(m);
