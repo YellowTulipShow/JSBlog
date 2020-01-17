@@ -128,39 +128,79 @@
             this.owner = owner;
             this.repo = repo;
         },
-        files_url: function() {
+        toUserURL: function() {
             var self = this;
-            var furl = "https://gitee.com/IAPI/v5/repos/{owner}/{repo}/git/gitee/trees/master?recursive=1";
-            return furl.format(self);
+            var temp = "https://gitee.com/api/v5/users/{owner}";
+            return temp.format({
+                owner: self.owner,
+            });
         },
-        files_callback: function(json) {
+        toUserModel: function(jsonResult) {
             var self = this;
-            var root = "";
-            root = "https://{owner}.gitee.io/";
-            if (self.repo !== self.owner && !/.*\.gitee\.io/gi.test(self.repo)) {
-                root += "{repo}/";
+            var j = jsonResult;
+            if (Object.get(j, "message", null) != null) {
+                return null;
             }
-            root = root.format(self);
-
-            var arr = [];
-            for (var i = 0; i < json.tree.length; i++) {
-                var m = json.tree[i];
-                arr.push({
-                    isdir: m.type === "tree",
-                    url: root + m.path,
-                });
-            }
-            return arr;
+            var model = $.extend(IAPI.modelUser(), {
+                "name": Object.get(j, "name", ""),
+                "type": Object.get(j, "type", ""),
+                "address": Object.get(j, "location", ""),
+                "email": Object.get(j, "email", ""),
+                "created_time": Object.get(j, "created_at", ""),
+                "updated_time": Object.get(j, "updated_at", ""),
+                "url": Object.get(j, "url", ""),
+                "url_avatar": Object.get(j, "avatar_url", ""),
+                "url_html": Object.get(j, "html_url", ""),
+            });
+            return model;
         },
-        user_url: function() {
+        toRepoContentURL: function(path) {
             var self = this;
-            var furl = "https://gitee.com/IAPI/v5/users/{owner}";
-            return furl.format(self);
+            var endChar = "/";
+            var value = path.toString() || endChar;
+            value = value.trim(endChar);
+            var temp = "https://gitee.com/api/v5/repos/{owner}/{repo}/contents/{path}";
+            var url = temp.format({
+                owner: self.owner,
+                repo: self.repo,
+                path: value,
+            });
+            return url.trim(endChar)
         },
-        user_callback: function(json) {
-            return {
-                avatar: json.avatar_url,
-            };
+        toRepoContentModel: function(jsonResult) {
+            var self = this;
+            var j = jsonResult;
+            if (Object.get(j, "message", null) != null) {
+                return null;
+            }
+            if (typeof(j) == "object" && typeof(j.length) == "number") {
+                for (var i = 0; i < j.length; i++) {
+                    j[i] = self.toRepoContentModel(j[i]);
+                }
+                return j;
+            }
+            var model = $.extend(IAPI.modelRepoContent(), {
+                "name": Object.get(j, "name", ""),
+                "path": Object.get(j, "path", ""),
+                "sha": Object.get(j, "sha", ""),
+                "size": Object.get(j, "size", 0),
+                "type": Object.get(j, "type", "dir"),
+                "url": Object.get(j, "url", ""),
+                "url_html": Object.get(j, "html_url", ""),
+                "url_git": Object.get(j, "git_url", ""),
+                "url_download": Object.get(j, "download_url", ""),
+                "link": Object.get(Object.get(j, "_links", {}), "self", ""),
+                "link_git": Object.get(Object.get(j, "_links", {}), "git", ""),
+                "link_html": Object.get(Object.get(j, "_links", {}), "html", ""),
+                "content": Object.get(j, "content", ""),
+                "encoding": Object.get(j, "encoding", ""),
+            });
+            return model;
+        },
+        isErrorResponse: function(jsonResult) {
+            jsonResult = jsonResult || {};
+            var message = Object.get(jsonResult, "message", null);
+            return message != null;
         },
     });
 })();
