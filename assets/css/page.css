@@ -58,12 +58,29 @@
     display: block;
     overflow: hidden;
     position: relative;
-    padding: .5em 0 0 .5em;
+    padding-bottom: 1em;
 }
-    .PhotoAlbum img {
+    .PhotoAlbum .item {
         display: block;
-        width: auto;
-        height: 6em;
+        overflow: hidden;
+        position: relative;
         float: left;
-        margin: 0 .5em .5em 0;
+        width: auto;
+        height: 10em;
+
+        margin-top: 1em;
+        margin-left: 1em;
+
+        -webkit-box-shadow: 0px 0px 4px #000, 0 0 2px #bab8b8 inset;
+        -moz-box-shadow: 0px 0px 4px #000, 0 0 2px #bab8b8 inset;
+        -ms-box-shadow: 0px 0px 4px #000, 0 0 2px #bab8b8 inset;
+        -o-box-shadow: 0px 0px 4px #000, 0 0 2px #bab8b8 inset;
+        box-shadow: 0px 0px 4px #000, 0 0 2px #bab8b8 inset;
     }
+        .PhotoAlbum .item .img {
+            display: block;
+            overflow: hidden;
+            position: relative;
+            width: auto;
+            height: 100%;
+        }
