@@ -213,14 +213,21 @@
                     console.log("目录路径读取为空:", path);
                     return;
                 }
+                // console.log("models:", models);
                 for (var i = 0; i < models.length; i++) {
                     var model = models[i];
                     var type = Object.get(model, "type", "");
                     var mpath = Object.get(model, "path", "");
                     if (type == "dir") {
                         self.TraverseRepoPaths(callback, mpath);
+                        callback(mpath, model);
                     }
-                    callback(mpath, model);
+                    if (type == "file") {
+                        self.RequestRepoContent(function(file_model) {
+                            var file_path = Object.get(file_model || {}, "path", "");
+                            callback(file_path, file_model);
+                        }, mpath);
+                    }
                 }
             }, path);
         },

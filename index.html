@@ -79,7 +79,7 @@
     <div id="IDMarkdownBody" class="container-lg px-3 my-5 markdown-body">
     </div>
     <div id="IDPhotoAlbum" class="PhotoAlbum">
-        <img class="img" v-bind:src="show_content(m.content)" v-for="m in models" />
+        <img class="img" v-bind:src="show_content(m)" v-for="m in models" />
     </div>
 
 <!-- ========================================脚本分割线======================================== -->
@@ -121,9 +121,8 @@
                 models: [],
             },
             methods: {
-                show_content: function(content) {
-                    console.log(content);
-                    content = content.replace(/\n/g,"");
+                show_content: function(model) {
+                    var content = model.content.replace(/\n/g,"");
                     return "data:image/png;base64," + content;
                 }
             }
@@ -152,11 +151,15 @@
         function _success_callback_() {
             show_acticle_content(page_args.path);
             blog.TraverseRepoPaths(function(path, model) {
-                menu.models.push(model);
-
-                if (/.+\.(jpg|png|gif)$/gi.test(model.name) && model.type == 'file') {
-
-                    album.models.push(model);
+                if (model == null) {
+                    console.log("path:{0}, model 为空!".format(path));
+                    return;
+                }
+                var m = $.extend({}, model);
+                console.log("path:{0} | {1} | {2}".format(path, m.path, path == m.path));
+                menu.models.push(m);
+                if (/.+\.(jpg|png|gif)$/gi.test(m.name) && m.type == 'file') {
+                    album.models.push(m);
                 }
             });
         }
