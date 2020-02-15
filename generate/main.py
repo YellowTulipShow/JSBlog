@@ -16,7 +16,6 @@ def main():
             "path": filepath,
         })
         print(filepath)
-
     urlspath = file.to_abs_path('../.jsblog.configs/', 'urls.json')
     urlspath = file.config_json_file_write(urlspath, urls)
     print('urlspath:', urlspath)

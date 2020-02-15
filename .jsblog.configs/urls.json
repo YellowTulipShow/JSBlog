@@ -1,8 +1,5 @@
 [
     {
-        "path": ".configs/urls.json"
-    },
-    {
         "path": ".idea/2020-01-07规划草稿.jpg"
     },
     {
@@ -22,6 +19,9 @@
     },
     {
         "path": ".idea/log.md"
+    },
+    {
+        "path": ".jsblog.configs/urls.json"
     },
     {
         "path": "acticle.html"
