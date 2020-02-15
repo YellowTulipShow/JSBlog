@@ -90,9 +90,8 @@
             models: [],
         },
         methods: {
-            show_content: function(model) {
-                var content = model.content.replace(/\n/g,"");
-                return "data:image/png;base64," + content;
+            show_content: function(url) {
+                return url;
             }
         }
     });
@@ -118,14 +117,13 @@
     }
 
     function _success_callback_() {
-        blog.TraverseRepoPaths(function(path, model) {
-            if (model == null) {
-                console.log("path:{0}, model 为空!".format(path));
-                return;
-            }
-            var m = $.extend({}, model);
-            if (/.+\.(jpg|png|gif)$/gi.test(m.name) && m.type == 'file') {
-                album.models.push(m);
+        blog.GetConfigUrls(function(urlmodels) {
+            for (var i = 0; i < urlmodels.length; i++) {
+                var model = urlmodels[i];
+                var path = Object.get(model, "path", "");
+                if (/.+\.(jpg|png|gif)$/gi.test(path)) {
+                    album.models.push(path);
+                }
             }
         });
     }

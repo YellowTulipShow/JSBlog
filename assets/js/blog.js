@@ -235,6 +235,18 @@
                 }
             }, path);
         },
+        GetConfigUrls: function(callback) {
+            callback = callback || function(urls) {};
+            var self = this;
+            var config_url = ".jsblog.configs/urls.json";
+            self.RequestRepoContent(function(model) {
+                var content = Object.get(model, "content", "");
+                var encoding = Object.get(model, "encoding", "text");
+                var value = self.toNormalText(content, encoding);
+                var urls = JSON.parse(value);
+                callback(urls);
+            }, config_url);
+        },
     };
     Blog.prototype.constructor = Blog;
     this.Blog = Blog;

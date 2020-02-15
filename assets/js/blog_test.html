@@ -47,6 +47,7 @@
 
     <script type="text/javascript" src="../package/jquery/jquery-3.4.1.js"></script>
     <script type="text/javascript" src="./base.js"></script>
+    <script type="text/javascript" src="./base64.js"></script>
     <script type="text/javascript" src="./inherit.js"></script>
     <script type="text/javascript" src="./dbStore.js"></script>
     <script type="text/javascript" src="./web_request.js"></script>
@@ -67,15 +68,17 @@
             },
             dbOpenSuccess: function() {
                 console.log("启用数据库成功!");
-                blog.RequestUser(function(modelUser) {
-                    console.log("modelUser:", modelUser);
-                });
-                blog.RequestRepoContent(function(modelRepoContent) {
-                    console.log("modelRepoContent:", modelRepoContent);
-                });
-                blog.RequestRepoContent(function(modelRepoContent) {
-                    console.log("modelRepoContent:", modelRepoContent);
-                }, "/.idea/log.md");
+                // blog.RequestUser(function(modelUser) {
+                //     console.log("modelUser:", modelUser);
+                // });
+                blog.RequestRepoContent(function(model) {
+                    console.log("model:", model);
+                    var content = Object.get(model, "content", "");
+                    var encoding = Object.get(model, "encoding", "text");
+                    var value = blog.toNormalText(content, encoding);
+                    var urls = JSON.parse(value);
+                    console.log("urls:", urls);
+                }, ".jsblog.configs/urls.json");
             },
         });
         console.log("blog:", blog);
