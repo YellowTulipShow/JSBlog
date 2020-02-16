@@ -13,7 +13,7 @@
     <!-- 站点图标 -->
     <link type="image/x-icon" rel="shortcut icon" href="https://ytsimg.gitee.io/blog/favicon/favicon.ico" />
 
-    <title>文章页 - JSBlog博客引擎</title>
+    <title>文章页面</title>
     <meta name="keywords" content="js, blog, yellowtulipshow, github, gitee" />
     <meta name="description" content="JSBlog 脚本博客, 遍历展现开源项目所有文件, 源代码 + 图片" />
 
@@ -45,16 +45,18 @@
     <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <!-- <link rel="stylesheet" type="text/css" href="./assets/css/base.css"> -->
     <link rel="stylesheet" type="text/css" href="./assets/css/page.css">
 
     <link rel="stylesheet" type="text/css" href="./assets/package/marked/style.css">
     <script type="text/javascript" src="./assets/package/marked/marked.min.js"></script>
 
-    <script type="text/javascript" src="./assets/package/jquery/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="./assets/package/jquery/jquery-3.4.1.js"></script>
+    <!-- <script type="text/javascript" src="./assets/package/jquery/jquery-3.4.1.min.js"></script> -->
     <script type="text/javascript" src="./assets/package/vue/vue.v2.6.10.min.js"></script>
 
-    <script type="text/javascript" src="./assets/js/base.js"></script>
     <script type="text/javascript" src="./assets/js/url_parameter.js"></script>
+    <script type="text/javascript" src="./assets/js/base.js"></script>
     <script type="text/javascript" src="./assets/js/base64.js"></script>
     <script type="text/javascript" src="./assets/js/inherit.js"></script>
     <script type="text/javascript" src="./assets/js/dbStore.js"></script>
@@ -63,14 +65,24 @@
     <script type="text/javascript" src="./assets/js/blog.js"></script>
 </head>
 <body class="body">
+    <div id="IDMenu" class="Menu" v-bind:class="{ Show: isShow }">
+        <div class="Button">
+            <button v-on:click="isShow = !isShow">{{isShow ? "关闭" : "打开"}}菜单</button>
+        </div>
+        <ol>
+            <li class="li" v-for="m in models">
+                {{m.path}}
+                <button v-on:click="acticle_show(m.path)"
+                        >展示文本</button>
+            </li>
+        </ol>
+    </div>
     <div id="IDMarkdownBody" class="container-lg px-3 my-5 markdown-body">
-        <h3>错误内容, 无数据!</h3>
     </div>
 
 <!-- ========================================脚本分割线======================================== -->
 
 <script type="text/javascript">
-(function() {
     var urlpar = new UrlParameter();
     var page_args = {
         platform: urlpar.get("platform") || "GitHub",
@@ -78,10 +90,28 @@
         repo: urlpar.get("repo") || "JSBlog",
         path: urlpar.get("path") || "README.md",
     };
+</script>
+<script type="text/javascript">
+(function() {
+    var menu = new Vue({
+        el: "#IDMenu",
+        data: {
+            isShow: false,
+            models: [],
+        },
+        methods: {
+            acticle_show: function(path) {
+                show_acticle_content(path);
+                this.isShow = false;
+            },
+        }
+    });
+
     var blog = null;
     $(document).ready(function() {
         _init_();
     });
+
     function _init_() {
         blog = new Blog({
             platform: page_args.platform,
@@ -92,22 +122,47 @@
                 console.log("启用数据库失败!");
             },
             dbOpenSuccess: function() {
-                show_acticle_content(page_args.path);
+                _success_callback_(page_args.path);
             },
         });
     }
-    function show_acticle_content(path) {
-        blog.RequestRepoContent(function(model) {
-            if (model == null) {
-                console.log("文件路径读取为空:", path);
-                return;
+
+    function _success_callback_() {
+        show_acticle_content(page_args.path);
+        blog.GetConfigUrls(function(urlmodels) {
+            for (var i = 0; i < urlmodels.length; i++) {
+                var model = urlmodels[i];
+                var path = Object.get(model, "path", "");
+                if (/.+\.md$/gi.test(path)) {
+                    var m = $.extend({}, model);
+                    menu.models.push(m);
+                }
             }
+        });
+    }
+
+    function show_acticle_content(path) {
+        read_acticle(path, function(model) {
             var content = Object.get(model, "content", "");
             var encoding = Object.get(model, "encoding", "text");
 
             var value = blog.toNormalText(content, encoding);
             var md = marked(value);
             $("#IDMarkdownBody").html(md);
+        });
+    }
+
+    function read_acticle(path, callback) {
+        callback = callback || function(model) {}
+        if (path == null || path == "") {
+            return;
+        }
+        blog.RequestRepoContent(function(model) {
+            if (model == null) {
+                console.log("文件路径读取为空:", path);
+                return;
+            }
+            callback(model)
         }, path);
     }
 })();
