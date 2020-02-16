@@ -1,5 +1,8 @@
 [
     {
+        "path": ".gitignore"
+    },
+    {
         "path": ".idea/2020-01-07规划草稿.jpg"
     },
     {
@@ -114,10 +117,7 @@
         "path": "generate/main.py"
     },
     {
-        "path": "generate/__pycache__/convert.cpython-36.pyc"
-    },
-    {
-        "path": "generate/__pycache__/file.cpython-36.pyc"
+        "path": "generate/README.md"
     },
     {
         "path": "index.html"

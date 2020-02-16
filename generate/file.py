@@ -21,14 +21,15 @@ def get_all_file_paths(root, ignores=[]):
         if ignores == None or len(ignores) <= 0:
             return False
         for ig in ignores:
-            if re.search(ig, folder):
+            if re.search(ig, folder, re.M|re.I):
                 return True
         return False
     for folder in folders:
-        if is_ignore(folder):
-            continue
         path = os.path.join(root, folder)
-        son_paths = get_all_file_paths(path)
+        path = path.replace('\\', '/')
+        if is_ignore(path):
+            continue
+        son_paths = get_all_file_paths(path, ignores)
         file_paths.extend(son_paths)
     return file_paths
 
