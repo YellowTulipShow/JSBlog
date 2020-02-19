@@ -94,6 +94,9 @@
         if (arguments.length <= 0) {
             return null;
         }
+        object = object || {};
+        name = name || {};
+        default_value = default_value || null;
         name = name.toString();
         var value = object[name];
         return value ? value : default_value;
