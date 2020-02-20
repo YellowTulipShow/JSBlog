@@ -8,8 +8,8 @@ import convert
 
 def ignores_filepaths():
     return [
-        r'\.git$',
-        r'__pycache__',
+        '.git$',
+        '__pycache__',
     ]
 
 def main():
@@ -26,5 +26,11 @@ def main():
     urlspath = file.config_json_file_write(urlspath, urls)
     print('urlspath:', urlspath)
 
+
 if __name__ == '__main__':
-    main()
+    # main()
+
+    config = file.read_program_config_DevelopToRelease(
+        release_file_name = '.config.release.json',
+        develop_file_name = '.config.develop.json')
+    print(config)

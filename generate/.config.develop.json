@@ -1,0 +1,12 @@
+{
+    "ignores": [
+        ".git$",
+        "__pycache__",
+    ],
+    "paths": [{
+        "path": "D:\\Work\\YTS.ZRQ\\JSBlog\\generate",
+        "ignores": [
+            "LICENSE",
+        ],
+    }]
+}

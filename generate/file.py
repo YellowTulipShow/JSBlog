@@ -9,6 +9,24 @@ import platform
 
 import convert
 
+def get_program_path():
+    self_program_path = sys.argv[0]
+    (self_program_dir, self_program_file) = os.path.split(self_program_path)
+    return self_program_dir
+
+def read_program_config(file_name, default_config_dict):
+    self_program_dir = get_program_path();
+    config_file_path = to_abs_path(self_program_dir, file_name)
+    if not os.path.isfile(config_file_path):
+        config_json_file_write(config_file_path, config_dict)
+    return config_json_file_read(config_file_path)
+
+def read_program_config_DevelopToRelease(release_file_name, develop_file_name):
+    self_program_dir = get_program_path();
+    develop_file_path = to_abs_path(self_program_dir, develop_file_name)
+    develop_file_content = config_json_file_read(develop_file_path)
+    return read_program_config(release_file_name, develop_file_content)
+
 def get_all_file_paths(root, ignores=[]):
     file_paths = []
     if os.path.isfile(root):
