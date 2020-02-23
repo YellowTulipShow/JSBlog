@@ -2,11 +2,15 @@
     "ignores": [
         ".git$",
         "__pycache__",
+        "LICENSE",
     ],
-    "paths": [{
-        "path": "D:\\Work\\YTS.ZRQ\\JSBlog\\generate",
-        "ignores": [
-            "LICENSE",
-        ],
-    }]
+    "projects": [
+        {
+            "path": "D:\\Work\\YTS.ZRQ\\JSBlog",
+            "ignores": [
+                "LICENSE",
+                "generate/.config.release.json"
+            ]
+        },
+    ]
 }

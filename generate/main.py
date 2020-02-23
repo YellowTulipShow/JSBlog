@@ -6,31 +6,31 @@ import re
 import file
 import convert
 
-def ignores_filepaths():
-    return [
-        '.git$',
-        '__pycache__',
-    ]
-
 def main():
-    urls = []
-    ignores = ignores_filepaths();
-    allfilepaths = file.get_all_file_paths("../", ignores=ignores)
-    for filepath in allfilepaths:
-        filepath = convert.trimStart(filepath, symbol=r'\.+/*')
-        urls.append({
-            "path": filepath,
-        })
-        # print(filepath)
-    urlspath = file.to_abs_path('../.jsblog.configs/', 'urls.json')
-    urlspath = file.config_json_file_write(urlspath, urls)
-    print('urlspath:', urlspath)
-
-
-if __name__ == '__main__':
-    # main()
-
     config = file.read_program_config_DevelopToRelease(
         release_file_name = '.config.release.json',
         develop_file_name = '.config.develop.json')
-    print(config)
+    global_ignores = config.get('ignores', [])
+    for project in config.get('projects', []):
+        generate_project_directory(project, global_ignores=global_ignores)
+
+def generate_project_directory(project, global_ignores=[]):
+    project_path = project.get('path', None)
+    if not project_path:
+        return
+    os.chdir(project_path)
+    urls = []
+    ignores = project.get('ignores', [])
+    ignores.extend(global_ignores)
+    allfilepaths = file.get_all_file_paths('./', ignores=ignores)
+    for filepath in allfilepaths:
+        filepath = convert.trimStart(filepath, symbol=r'[^\/]+')
+        urls.append({
+            "path": filepath,
+        })
+    urlspath = file.to_abs_path('.jsblog.configs/', 'urls.json')
+    urlspath = file.config_json_file_write(urlspath, urls)
+    print('urlspath:', urlspath)
+
+if __name__ == '__main__':
+    main()
