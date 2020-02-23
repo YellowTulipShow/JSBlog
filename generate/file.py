@@ -1,11 +1,11 @@
  # coding: UTF-8
 
-import sys
-import os
 import json
 import re
 import datetime
 import platform
+import sys
+import os
 
 import convert
 
@@ -104,15 +104,3 @@ def config_json_file_read(abs_path):
 def config_json_file_write(abs_path, dict):
     content = json.dumps(dict, indent=4, ensure_ascii=False, cls=DateEncoder)
     return file_write(abs_path, content)
-
-def __test_config_json_file():
-    path = to_abs_path('../config', 'databases.json')
-    content = config_json_file_read(path)
-    print(content)
-    path = to_abs_path('../__auto__/config', 'databases.json')
-    path = config_json_file_write(path, content)
-    print(path)
-
-if __name__ == '__main__':
-    __test_config_json_file()
-
