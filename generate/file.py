@@ -27,7 +27,11 @@ def read_program_config_DevelopToRelease(release_file_name, develop_file_name):
     develop_file_content = config_json_file_read(develop_file_path)
     return read_program_config(release_file_name, develop_file_content)
 
-def get_all_file_paths(root, ignores=[]):
+def get_all_file_paths(root, is_ignore=None):
+    def default_is_ignore(folder):
+        return True
+    if not is_ignore:
+        is_ignore = default_is_ignore
     file_paths = []
     if os.path.isfile(root):
         file_paths.append(root)
@@ -35,19 +39,12 @@ def get_all_file_paths(root, ignores=[]):
     if not os.path.isdir(root):
         return file_paths
     folders = os.listdir(root)
-    def is_ignore(folder):
-        if ignores == None or len(ignores) <= 0:
-            return False
-        for ig in ignores:
-            if re.search(ig, folder, re.M|re.I):
-                return True
-        return False
     for folder in folders:
         path = os.path.join(root, folder)
         path = path.replace('\\', '/')
         if is_ignore(path):
             continue
-        son_paths = get_all_file_paths(path, ignores)
+        son_paths = get_all_file_paths(path, is_ignore=is_ignore)
         file_paths.extend(son_paths)
     return file_paths
 

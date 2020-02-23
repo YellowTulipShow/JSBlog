@@ -3,6 +3,7 @@
         ".git$",
         "__pycache__",
         "LICENSE",
+        ".jsblog.configs$"
     ],
     "projects": [
         {

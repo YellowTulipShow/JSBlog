@@ -22,7 +22,14 @@ def generate_project_directory(project, global_ignores=[]):
     urls = []
     ignores = project.get('ignores', [])
     ignores.extend(global_ignores)
-    allfilepaths = file.get_all_file_paths('./', ignores=ignores)
+    def is_ignore(folder):
+        if ignores == None or len(ignores) <= 0:
+            return False
+        for ig in ignores:
+            if re.search(ig, folder, re.M|re.I):
+                return True
+        return False
+    allfilepaths = file.get_all_file_paths('./', is_ignore=is_ignore)
     for filepath in allfilepaths:
         filepath = convert.trimStart(filepath, symbol=r'[^\/]+')
         urls.append({
