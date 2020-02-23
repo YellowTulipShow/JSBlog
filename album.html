@@ -82,6 +82,7 @@
         platform: urlpar.get("platform") || "GitHub",
         owner: urlpar.get("owner") || "YellowTulipShow",
         repo: urlpar.get("repo") || "JSBlog",
+        source: urlpar.get("source") || null,
     };
 
     var album = new Vue({
@@ -91,6 +92,11 @@
         },
         methods: {
             show_content: function(url) {
+                url = url.trimStart('/+');
+                if (page_args.source) {
+                    var path = page_args.source.trimEnd('/+');
+                    url = path + '/' + url;
+                }
                 return url;
             }
         }
